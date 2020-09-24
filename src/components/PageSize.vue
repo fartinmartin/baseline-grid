@@ -42,14 +42,6 @@
       </div>
     </div>
   </panel>
-
-  <pre>
-    unit: {{ unit }}
-    preset: {{ preset }}
-    width: {{ width }}
-    height: {{ height }}
-    orientation: {{ orientation }}
-  </pre>
 </template>
 
 <script lang="ts">
@@ -75,12 +67,3 @@ export default defineComponent({
   })
 });
 </script>
-
-<style lang="scss" scoped>
-pre {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-}
-</style>
