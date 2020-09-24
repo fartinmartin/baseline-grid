@@ -1,0 +1,26 @@
+[
+  {
+    "group": "main",
+    "presets": [
+      { "id": "points", "name": "Points", "ratio": 1 },
+      { "id": "picas", "name": "Picas", "ratio": 1 },
+      { "id": "inches", "name": "Inches", "ratio": 1 },
+      { "id": "millimeters", "name": "Millimeters", "ratio": 1 },
+      { "id": "centimeters", "name": "Centimeters", "ratio": 1 },
+      { "id": "pixels", "name": "Pixels", "ratio": 1 }
+    ]
+  },
+  {
+    "group": "unique",
+    "presets": [
+      { "id": "ciceros", "name": "Ciceros", "ratio": 1 },
+      { "id": "agates", "name": "Agates", "ratio": 1 }
+    ]
+  },
+  {
+    "group": "custom",
+    "presets": [
+      { "id": "custom", "name": "Custom...", "ratio": 1, "disabled": true }
+    ]
+  }
+]

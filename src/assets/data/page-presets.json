@@ -1,0 +1,45 @@
+[
+  {
+    "group": "american",
+    "presets": [
+      { "id": "letter", "name": "Letter", "width": 51, "height": 66 },
+      { "id": "legal", "name": "Legal", "width": 1, "height": 2 },
+      { "id": "tabloid", "name": "Tabloid", "width": 1, "height": 2 },
+      { "id": "letterHalf", "name": "Letter – Half", "width": 1, "height": 2 },
+      { "id": "legalHalf", "name": "Legal – Half", "width": 1, "height": 2 }
+    ]
+  },
+  {
+    "group": "international",
+    "presets": [
+      { "id": "A5", "name": "A5", "width": 1, "height": 2 },
+      { "id": "A4", "name": "A4", "width": 1, "height": 2 },
+      { "id": "A3", "name": "A3", "width": 1, "height": 2 },
+      { "id": "B5", "name": "B5", "width": 1, "height": 2 }
+    ]
+  },
+  {
+    "group": "unique",
+    "presets": [
+      {
+        "id": "businessCard",
+        "name": "US Business Card",
+        "width": 1,
+        "height": 2
+      },
+      { "id": "cd", "name": "Compact Disc", "width": 1, "height": 2 }
+    ]
+  },
+  {
+    "group": "custom",
+    "presets": [
+      {
+        "id": "custom",
+        "name": "Custom...",
+        "width": 1,
+        "height": 2,
+        "disabled": true
+      }
+    ]
+  }
+]
