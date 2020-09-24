@@ -6,29 +6,18 @@
       id="page-units"
       label="Units: "
       v-model="unit"
-      :data="unitPresets"
+      :options="unitPresets"
     />
 
     <select-input
       id="page-presets"
       label="Presets: "
       v-model="preset"
-      :data="pagePresets"
+      :options="pagePresets"
     />
 
-    <number-input
-      label="Width: "
-      :value="width"
-      @change="e => (width = e.target.value)"
-      :unit="unit"
-    />
-
-    <number-input
-      label="Height: "
-      :value="height"
-      @change="e => (height = e.target.value)"
-      :unit="unit"
-    />
+    <number-input label="Width: " v-model="width" :unit="unit" />
+    <number-input label="Height: " v-model="height" :unit="unit" />
 
     <div>
       <h3>Orientation</h3>
@@ -41,6 +30,14 @@
         <label for="landscape">Landscape</label>
       </div>
     </div>
+
+    <pre>
+      {{ unit }}
+      {{ preset }}
+      {{ width }}
+      {{ height }}
+      {{ orientation }}
+    </pre>
   </panel>
 </template>
 

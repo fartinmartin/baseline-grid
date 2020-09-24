@@ -4,10 +4,10 @@
     <select
       :name="id"
       :id="id"
-      :value="value"
-      @input="$emit('input', $event.target.value)"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
     >
-      <optgroup v-for="group in data" :key="group.group">
+      <optgroup v-for="group in options" :key="group.group">
         <option
           v-for="preset in group.presets"
           :key="preset.id"
@@ -29,8 +29,8 @@ export default defineComponent({
   props: {
     id: String,
     label: String,
-    value: String,
-    data: Object
+    modelValue: String,
+    options: Object
   }
 });
 </script>

@@ -6,12 +6,12 @@
         ref="input"
         type="number"
         :name="name"
-        :value="value"
         :min="min"
         :max="max"
         :step="step"
         :disabled="disabled || (!canDecrease && !canIncrease)"
-        @change="change"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
       />
       <div v-if="unit" class="input-append">
         <span class="unit">{{ unit }}</span>
@@ -53,7 +53,7 @@ export default defineComponent({
       default: "picas"
     },
 
-    value: {
+    modelValue: {
       type: Number,
       default: NaN
     },
@@ -90,11 +90,11 @@ export default defineComponent({
     },
 
     canIncrease(): boolean {
-      return this.value < this.max;
+      return this.modelValue < this.max;
     },
 
     canDecrease(): boolean {
-      return this.value > this.min;
+      return this.modelValue > this.min;
     }
   },
 
@@ -105,12 +105,12 @@ export default defineComponent({
 
     decrease() {
       this.canDecrease && this.inputRef.value--;
-      this.change({ target: { value: this.inputRef.value } });
+      this.$emit("update:modelValue", this.inputRef.value);
     },
 
     increase() {
       this.canDecrease && this.inputRef.value++;
-      this.change({ target: { value: this.inputRef.value } });
+      this.$emit("update:modelValue", this.inputRef.value);
     }
   }
 });
