@@ -1,6 +1,6 @@
 <template>
   <panel>
-    <h2>Margins</h2>
+    <h3>Margins</h3>
     <number-input
       id="marginTop"
       label="Top: "

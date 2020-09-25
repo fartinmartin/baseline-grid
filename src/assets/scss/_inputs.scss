@@ -1,0 +1,13 @@
+input,
+select,
+button {
+  height: 2rem;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--black);
+  border-radius: 3px;
+}
+
+input {
+  padding-left: 0.5rem;
+}

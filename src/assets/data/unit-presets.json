@@ -2,25 +2,25 @@
   {
     "group": "main",
     "presets": [
-      { "id": "points", "name": "Points", "ratio": 1 },
-      { "id": "picas", "name": "Picas", "ratio": 1 },
-      { "id": "inches", "name": "Inches", "ratio": 1 },
-      { "id": "millimeters", "name": "Millimeters", "ratio": 1 },
-      { "id": "centimeters", "name": "Centimeters", "ratio": 1 },
-      { "id": "pixels", "name": "Pixels", "ratio": 1 }
+      { "id": "points", "name": "Points", "factor": 1 },
+      { "id": "picas", "name": "Picas", "factor": 0.083333333 },
+      { "id": "inches", "name": "Inches", "factor": 0.013888889 },
+      { "id": "millimeters", "name": "Millimeters", "factor": 0.352733686 },
+      { "id": "centimeters", "name": "Centimeters", "factor": 0.035278346 },
+      { "id": "pixels", "name": "Pixels", "factor": 1 }
     ]
   },
   {
     "group": "unique",
     "presets": [
-      { "id": "ciceros", "name": "Ciceros", "ratio": 1 },
-      { "id": "agates", "name": "Agates", "ratio": 1 }
+      { "id": "ciceros", "name": "Ciceros", "factor": 0.083333333 },
+      { "id": "agates", "name": "Agates", "factor": 0.181818182 }
     ]
   },
   {
     "group": "custom",
     "presets": [
-      { "id": "custom", "name": "Custom...", "ratio": 1, "disabled": true }
+      { "id": "custom", "name": "Custom...", "factor": 1, "disabled": true }
     ]
   }
 ]

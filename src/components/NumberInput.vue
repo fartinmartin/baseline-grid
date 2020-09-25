@@ -1,6 +1,24 @@
 <template>
   <div class="input-group">
-    <label :for="id">{{ label }}</label>
+    <label :for="id" class="label">{{ label }}</label>
+    <div class="controls">
+      <button
+        class="button increment"
+        type="button"
+        :disabled="disabled || !canIncrease"
+        @click="increase"
+      >
+        ▲
+      </button>
+      <button
+        class="button decrement"
+        type="button"
+        :disabled="disabled || !canDecrease"
+        @click="decrease"
+      >
+        ▼
+      </button>
+    </div>
     <div class="input">
       <input
         ref="input"
@@ -13,23 +31,9 @@
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
       />
-      <div v-if="unit" class="input-append">
-        <span class="unit">{{ unit }}</span>
-      </div>
-      <div>
-        <button
-          class="button decrement"
-          type="button"
-          :disabled="disabled || !canDecrease"
-          @click="decrease"
-        />
-        <button
-          class="button increment"
-          type="button"
-          :disabled="disabled || !canIncrease"
-          @click="increase"
-        />
-      </div>
+    </div>
+    <div v-if="unit" class="input-append">
+      <span class="unit">{{ unit }}</span>
     </div>
   </div>
 </template>
@@ -117,8 +121,48 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-button {
-  height: 1rem;
+.input-group {
+  display: flex;
+  align-items: baseline;
+}
+
+.label {
+  margin-right: 0.5rem;
+}
+
+.controls {
   width: 2rem;
+  height: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+
+  button {
+    width: 2rem;
+    height: 1rem;
+    font-size: 0.5rem;
+    border-radius: 0;
+
+    &:nth-of-type(1) {
+      border-top-left-radius: 3px;
+      border-bottom: none;
+    }
+
+    &:nth-of-type(2) {
+      border-bottom-left-radius: 3px;
+      border-top: none;
+    }
+  }
+}
+
+.input {
+  input {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 7ch;
+  }
+  margin-right: 0.5rem;
 }
 </style>

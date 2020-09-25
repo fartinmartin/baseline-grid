@@ -2,20 +2,32 @@
   {
     "group": "american",
     "presets": [
-      { "id": "letter", "name": "Letter", "width": 51, "height": 66 },
-      { "id": "legal", "name": "Legal", "width": 1, "height": 2 },
-      { "id": "tabloid", "name": "Tabloid", "width": 1, "height": 2 },
-      { "id": "letterHalf", "name": "Letter – Half", "width": 1, "height": 2 },
-      { "id": "legalHalf", "name": "Legal – Half", "width": 1, "height": 2 }
+      { "id": "letter", "name": "Letter", "width": 612, "height": 792 },
+      { "id": "legal", "name": "Legal", "width": 612, "height": 792 },
+      { "id": "tabloid", "name": "Tabloid", "width": 792, "height": 1224 },
+      {
+        "id": "letterHalf",
+        "name": "Letter – Half",
+        "width": 396,
+        "height": 792,
+        "prefersLandscape": true
+      },
+      {
+        "id": "legalHalf",
+        "name": "Legal – Half",
+        "width": 504,
+        "height": 612,
+        "prefersLandscape": true
+      }
     ]
   },
   {
     "group": "international",
     "presets": [
-      { "id": "A5", "name": "A5", "width": 1, "height": 2 },
-      { "id": "A4", "name": "A4", "width": 1, "height": 2 },
-      { "id": "A3", "name": "A3", "width": 1, "height": 2 },
-      { "id": "B5", "name": "B5", "width": 1, "height": 2 }
+      { "id": "A5", "name": "A5", "width": 419.528, "height": 595.276 },
+      { "id": "A4", "name": "A4", "width": 595.276, "height": 841.89 },
+      { "id": "A3", "name": "A3", "width": 841.89, "height": 1190.551 },
+      { "id": "B5", "name": "B5", "width": 498.898, "height": 708.661 }
     ]
   },
   {
@@ -24,10 +36,16 @@
       {
         "id": "businessCard",
         "name": "US Business Card",
-        "width": 1,
-        "height": 2
+        "width": 144,
+        "height": 252,
+        "prefersLandscape": true
       },
-      { "id": "cd", "name": "Compact Disc", "width": 1, "height": 2 }
+      {
+        "id": "cd",
+        "name": "Compact Disc",
+        "width": 340.157,
+        "height": 340.157
+      }
     ]
   },
   {
@@ -36,8 +54,8 @@
       {
         "id": "custom",
         "name": "Custom...",
-        "width": 1,
-        "height": 2,
+        "width": 612,
+        "height": 792,
         "disabled": true
       }
     ]

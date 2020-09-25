@@ -10,12 +10,13 @@ interface Preset {
 }
 
 export interface UnitPreset extends Preset {
-  ratio: number;
+  factor: number;
 }
 
 export interface PagePreset extends Preset {
   width: number;
   height: number;
+  prefersLandscape?: boolean;
 }
 
 export type UnitOption =

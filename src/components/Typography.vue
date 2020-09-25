@@ -1,6 +1,6 @@
 <template>
   <panel>
-    <h2>Typography</h2>
+    <h3>Typography</h3>
     <number-input id="fontSize" label="Font Size: " unit="pt" :value="size" />
     <number-input id="leading" label="Leading: " unit="pt" :value="leading" />
   </panel>
