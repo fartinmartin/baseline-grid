@@ -1,54 +1,60 @@
 <template>
   <div class="input-group">
-    <label :for="id" class="label">{{ label }}</label>
-    <div class="controls">
-      <button
-        class="button increment"
-        type="button"
-        :disabled="disabled || !canIncrease"
-        @click="increase"
-      >
-        ▲
-      </button>
-      <button
-        class="button decrement"
-        type="button"
-        :disabled="disabled || !canDecrease"
-        @click="decrease"
-      >
-        ▼
-      </button>
-    </div>
-    <div class="input">
-      <input
-        ref="input"
-        type="number"
-        :name="name"
-        :min="min"
-        :max="max"
-        :step="step"
-        :disabled="disabled || (!canDecrease && !canIncrease)"
-        :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"
-      />
-    </div>
-    <div v-if="unit" class="input-append">
-      <span class="unit">{{ unit }}</span>
+    <label :for="name" class="label">{{ label }}</label>
+    <div class="number-wrap">
+      <div class="controls">
+        <button
+          class="button increment"
+          type="button"
+          tabindex="-1"
+          :disabled="disabled || !canIncrease"
+          @click="increase"
+        >
+          ▲
+        </button>
+        <button
+          class="button decrement"
+          type="button"
+          tabindex="-1"
+          :disabled="disabled || !canDecrease"
+          @click="decrease"
+        >
+          ▼
+        </button>
+      </div>
+      <div class="input">
+        <input
+          ref="inputRef"
+          type="number"
+          :id="name"
+          :name="name"
+          :min="min"
+          :max="max"
+          :step="step"
+          :placeholder="placeholder"
+          :disabled="disabled || (!canDecrease && !canIncrease)"
+          :value="modelValue"
+          @input="$emit('update:modelValue', $event.target.value)"
+        />
+      </div>
+      <div v-if="unit" class="input-append">
+        <span class="unit">{{ unit }}</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "NumberInput",
-
   props: {
     label: String,
 
     name: {
       type: String,
+      required: true,
       default: undefined
     },
 
@@ -64,7 +70,7 @@ export default defineComponent({
 
     min: {
       type: Number,
-      default: -Infinity
+      default: 1
     },
 
     max: {
@@ -87,47 +93,54 @@ export default defineComponent({
       default: false
     }
   },
+  setup(props, { emit }) {
+    const inputRef = (ref(null) as unknown) as { value: HTMLInputElement };
+    const canIncrease = computed(() => props.modelValue < props.max);
+    const canDecrease = computed(() => props.modelValue > props.min);
 
-  computed: {
-    inputRef(): { value: number } {
-      return this.$refs.input as { value: number };
-    },
+    const change = (event: InputEvent) => emit("change", event);
 
-    canIncrease(): boolean {
-      return this.modelValue < this.max;
-    },
+    const decrease = (event: KeyboardEvent) => {
+      if (!canDecrease.value) return;
+      const stepFactor = event.shiftKey ? 10 : 1;
 
-    canDecrease(): boolean {
-      return this.modelValue > this.min;
-    }
-  },
+      const newValue: number =
+        Math.round(
+          (+inputRef.value.value - props.step * stepFactor + Number.EPSILON) *
+            10000
+        ) / 10000;
 
-  methods: {
-    change(event: object) {
-      this.$emit("change", event);
-    },
+      emit("update:modelValue", newValue);
+    };
 
-    decrease() {
-      this.canDecrease && this.inputRef.value--;
-      this.$emit("update:modelValue", this.inputRef.value);
-    },
+    const increase = (event: KeyboardEvent) => {
+      if (!canIncrease.value) return;
+      const stepFactor = event.shiftKey ? 10 : 1;
+      const newValue: number =
+        Math.round(
+          (+inputRef.value.value + props.step * stepFactor + Number.EPSILON) *
+            10000
+        ) / 10000;
 
-    increase() {
-      this.canDecrease && this.inputRef.value++;
-      this.$emit("update:modelValue", this.inputRef.value);
-    }
+      emit("update:modelValue", newValue);
+    };
+
+    return {
+      inputRef,
+      canIncrease,
+      canDecrease,
+      change,
+      increase,
+      decrease
+    };
   }
 });
 </script>
 
 <style lang="scss" scoped>
-.input-group {
+.number-wrap {
   display: flex;
   align-items: baseline;
-}
-
-.label {
-  margin-right: 0.5rem;
 }
 
 .controls {
@@ -145,12 +158,12 @@ export default defineComponent({
     border-radius: 0;
 
     &:nth-of-type(1) {
-      border-top-left-radius: 3px;
+      border-top-left-radius: var(--border-radius);
       border-bottom: none;
     }
 
     &:nth-of-type(2) {
-      border-bottom-left-radius: 3px;
+      border-bottom-left-radius: var(--border-radius);
       border-top: none;
     }
   }
@@ -161,8 +174,23 @@ export default defineComponent({
     border-left: none;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    width: 7ch;
+    text-align: right;
+    padding-right: 0.5rem;
+    width: 100%;
   }
   margin-right: 0.5rem;
+}
+
+/* Remove number input controls */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 </style>

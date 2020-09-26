@@ -2,21 +2,31 @@
   {
     "group": "american",
     "presets": [
-      { "id": "letter", "name": "Letter", "width": 612, "height": 792 },
-      { "id": "legal", "name": "Legal", "width": 612, "height": 792 },
-      { "id": "tabloid", "name": "Tabloid", "width": 792, "height": 1224 },
+      {
+        "id": "letter",
+        "name": "Letter",
+        "dimensions": { "width": 612, "height": 792 }
+      },
+      {
+        "id": "legal",
+        "name": "Legal",
+        "dimensions": { "width": 612, "height": 792 }
+      },
+      {
+        "id": "tabloid",
+        "name": "Tabloid",
+        "dimensions": { "width": 792, "height": 1224 }
+      },
       {
         "id": "letterHalf",
         "name": "Letter – Half",
-        "width": 396,
-        "height": 792,
+        "dimensions": { "width": 396, "height": 792 },
         "prefersLandscape": true
       },
       {
         "id": "legalHalf",
         "name": "Legal – Half",
-        "width": 504,
-        "height": 612,
+        "dimensions": { "width": 504, "height": 612 },
         "prefersLandscape": true
       }
     ]
@@ -24,10 +34,26 @@
   {
     "group": "international",
     "presets": [
-      { "id": "A5", "name": "A5", "width": 419.528, "height": 595.276 },
-      { "id": "A4", "name": "A4", "width": 595.276, "height": 841.89 },
-      { "id": "A3", "name": "A3", "width": 841.89, "height": 1190.551 },
-      { "id": "B5", "name": "B5", "width": 498.898, "height": 708.661 }
+      {
+        "id": "A5",
+        "name": "A5",
+        "dimensions": { "width": 419.528, "height": 595.276 }
+      },
+      {
+        "id": "A4",
+        "name": "A4",
+        "dimensions": { "width": 595.276, "height": 841.89 }
+      },
+      {
+        "id": "A3",
+        "name": "A3",
+        "dimensions": { "width": 841.89, "height": 1190.551 }
+      },
+      {
+        "id": "B5",
+        "name": "B5",
+        "dimensions": { "width": 498.898, "height": 708.661 }
+      }
     ]
   },
   {
@@ -36,15 +62,13 @@
       {
         "id": "businessCard",
         "name": "US Business Card",
-        "width": 144,
-        "height": 252,
+        "dimensions": { "width": 144, "height": 252 },
         "prefersLandscape": true
       },
       {
         "id": "cd",
         "name": "Compact Disc",
-        "width": 340.157,
-        "height": 340.157
+        "dimensions": { "width": 340.157, "height": 340.157 }
       }
     ]
   },
@@ -54,8 +78,7 @@
       {
         "id": "custom",
         "name": "Custom...",
-        "width": 612,
-        "height": 792,
+        "dimensions": { "width": 612, "height": 792 },
         "disabled": true
       }
     ]

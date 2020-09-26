@@ -23,6 +23,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .footer {
+  background: var(--white);
   padding: 2rem;
+  overflow-x: hidden;
+  box-shadow: 0px calc(var(--toolbar-fade) * -1px)
+    calc(var(--toolbar-fade) * 1px) var(--gray-00);
+  z-index: 100;
 }
 </style>

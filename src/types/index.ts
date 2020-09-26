@@ -11,11 +11,11 @@ interface Preset {
 
 export interface UnitPreset extends Preset {
   factor: number;
+  step?: number;
 }
 
 export interface PagePreset extends Preset {
-  width: number;
-  height: number;
+  dimensions: { width: number; height: number };
   prefersLandscape?: boolean;
 }
 
@@ -43,5 +43,3 @@ export type PageOption =
   | "businessCard"
   | "cd"
   | "custom";
-
-export type Orientation = "portrait" | "landscape";

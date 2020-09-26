@@ -2,12 +2,27 @@
   {
     "group": "main",
     "presets": [
-      { "id": "points", "name": "Points", "factor": 1 },
-      { "id": "picas", "name": "Picas", "factor": 0.083333333 },
-      { "id": "inches", "name": "Inches", "factor": 0.013888889 },
-      { "id": "millimeters", "name": "Millimeters", "factor": 0.352733686 },
-      { "id": "centimeters", "name": "Centimeters", "factor": 0.035278346 },
-      { "id": "pixels", "name": "Pixels", "factor": 1 }
+      { "id": "points", "name": "Points", "factor": 1, "step": 1 },
+      { "id": "picas", "name": "Picas", "factor": 0.083333333, "step": 0.1 },
+      {
+        "id": "inches",
+        "name": "Inches",
+        "factor": 0.013888889,
+        "step": 0.0625
+      },
+      {
+        "id": "millimeters",
+        "name": "Millimeters",
+        "factor": 0.352733686,
+        "step": 1
+      },
+      {
+        "id": "centimeters",
+        "name": "Centimeters",
+        "factor": 0.035278346,
+        "step": 1
+      },
+      { "id": "pixels", "name": "Pixels", "factor": 1, "step": 1 }
     ]
   },
   {

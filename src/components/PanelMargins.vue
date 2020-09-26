@@ -1,18 +1,13 @@
 <template>
   <panel>
     <h3>Margins</h3>
-    <number-input
-      id="marginTop"
-      label="Top: "
-      :unit="unit"
-      :value="marginTop"
-    />
 
+    <number-input name="margin-top" label="Top: " v-model="top" :unit="unit" />
     <number-input
-      id="marginBottom"
+      name="margin-bottom"
       label="Bottom: "
+      v-model="bottom"
       :unit="unit"
-      :value="marginBottom"
     />
   </panel>
 </template>
@@ -21,10 +16,16 @@
 import { defineComponent } from "vue";
 import NumberInput from "./NumberInput.vue";
 import Panel from "./Panel.vue";
+import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
-  name: "Margins",
-  components: { NumberInput, Panel }
+  name: "PanelMargins",
+  components: { NumberInput, Panel },
+  setup() {
+    const { unit, top, bottom } = useToolbar();
+
+    return { unit, top, bottom };
+  }
 });
 </script>
 

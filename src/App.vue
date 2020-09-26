@@ -1,28 +1,22 @@
 <template>
   <div class="app-wrap">
     <toolbar />
-    <page-preview :width="width" :height="height" />
+    <page-preview />
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
 import Toolbar from "./components/Toolbar.vue";
 import PagePreview from "./components/PagePreview.vue";
-import useToolbar from "@/state/toolbar";
+import { defineComponent } from "vue";
 
-@Options({
+export default defineComponent({
+  name: "App",
   components: {
     Toolbar,
     PagePreview
-  },
-  setup() {
-    const { width, height } = useToolbar();
-    console.log(width, height);
-    return { width, height };
   }
-})
-export default class App extends Vue {}
+});
 </script>
 
 <style lang="scss" scoped>

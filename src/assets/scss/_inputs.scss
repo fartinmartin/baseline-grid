@@ -1,3 +1,7 @@
+:root {
+  --border-radius: 3px;
+}
+
 input,
 select,
 button {
@@ -5,9 +9,32 @@ button {
   padding: 0;
   margin: 0;
   border: 1px solid var(--black);
-  border-radius: 3px;
+  border-radius: var(--border-radius);
 }
 
 input {
   padding-left: 0.5rem;
+}
+
+label:not(.serif) {
+  font-family: var(--sans-serif);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.0125em;
+  font-weight: 700;
+  opacity: 0.5;
+  margin-bottom: 0.25rem;
+}
+
+button,
+select,
+input[type="radio"],
+input[type="radio"] + label {
+  cursor: pointer;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
 }
