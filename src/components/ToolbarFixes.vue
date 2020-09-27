@@ -1,8 +1,9 @@
 <template>
-  <panel>
-    <h1>hi</h1>
-    <button @click="currentPanel = 'ToolbarCalc'">wait, go back</button>
-  </panel>
+  <div>
+    <panel>
+      <h1>hi</h1>
+    </panel>
+  </div>
 </template>
 
 <script lang="ts">

@@ -1,49 +1,62 @@
 <template>
-  <panel>
-    <div v-if="Number.isInteger(lines)" class="message good-news">
-      You're good to go!
-    </div>
-    <button
-      v-else
-      class="message bad-news"
-      @click.prevent="currentPanel = 'ToolbarFixes'"
-    >
-      You'll need to make some tweaks. <span>Follow me! →</span>
-    </button>
-  </panel>
+  <button
+    v-if="currentPanel != 'ToolbarFixes'"
+    class="message"
+    :class="Number.isInteger(lines) ? 'good-news' : 'bad-news'"
+    @click.prevent="onClick"
+  >
+    <span v-if="Number.isInteger(lines)">
+      Things are lining up—<br />you're good to go!
+    </span>
+    <span v-else>
+      You'll need to make some tweaks.
+      <span class="cta">Follow me! →</span>
+    </span>
+  </button>
+
+  <button
+    v-else
+    class="message okay-news"
+    @click.prevent="currentPanel = 'ToolbarCalc'"
+  >
+    Okay, got it.<br />
+    <span class="cta">← Take me back!</span>
+  </button>
 </template>
 
 <script lang="ts">
+// 🚨 TODO:
+// This could/should be ever present (as a "snackbar"-like notification attached to ToolbarHeader or ToolbarFooter?)
+
 import { defineComponent } from "vue";
-import Panel from "./Panel.vue";
 import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
   name: "PanelOutput",
-  components: { Panel },
   setup() {
-    const {
-      lines,
-      heightPt,
-      area,
-      topPt,
-      bottomPt,
-      currentPanel
-    } = useToolbar();
-    return { lines, heightPt, area, topPt, bottomPt, currentPanel };
+    const { lines, currentPanel } = useToolbar();
+
+    const onClick = () => {
+      if (Number.isInteger(lines)) return;
+      currentPanel.value = "ToolbarFixes";
+    };
+    return { lines, currentPanel, onClick };
   }
 });
 </script>
 
 <style lang="scss" scoped>
 .message {
-  padding: 1rem;
+  padding: 1rem 2rem;
   border: 2px solid var(--border-color);
-  border-radius: var(--border-radius);
+  border-right: none;
+  border-left: none;
+  border-radius: 0;
   background: var(--bg-color);
-  text-align: center;
+  text-align: left;
+  width: 100%;
 
-  span {
+  span.cta {
     font-style: italic;
   }
 }
@@ -51,11 +64,17 @@ export default defineComponent({
 .message.good-news {
   --bg-color: hsl(120, 53%, 85%);
   --border-color: hsl(120, 53%, 45%);
+  pointer-events: none;
 }
 
 .message.bad-news {
   --bg-color: hsl(9, 100%, 86%);
   --border-color: hsl(9, 100%, 64%);
+}
+
+.message.okay-news {
+  --bg-color: hsl(36, 100%, 86%);
+  --border-color: hsl(36, 100%, 64%);
 }
 
 button.message {

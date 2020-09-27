@@ -44,7 +44,7 @@ h1,
 span {
   font-weight: 700;
   opacity: 0.25;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.1s ease;
   cursor: pointer;
 }
 

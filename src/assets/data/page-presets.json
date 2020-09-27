@@ -10,7 +10,7 @@
       {
         "id": "legal",
         "name": "Legal",
-        "dimensions": { "width": 612, "height": 792 }
+        "dimensions": { "width": 612, "height": 1008 }
       },
       {
         "id": "tabloid",

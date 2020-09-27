@@ -64,6 +64,9 @@ export default defineComponent({
 #page {
   background: var(--white);
   position: relative;
+  box-sizing: content-box;
+  border: 1px solid var(--black);
+  box-shadow: 2px 2px 0px 0px var(--black);
 }
 
 #margin {

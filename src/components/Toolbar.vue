@@ -3,7 +3,7 @@
     <toolbar-header />
     <div class="toolbar">
       <keep-alive>
-        <transition :name="transition" mode="out-in">
+        <transition :name="transition">
           <component :is="currentPanel"></component>
         </transition>
       </keep-alive>
@@ -48,41 +48,68 @@ export default defineComponent({
   background: var(--gray-00);
 
   overflow-x: hidden;
+  border-right: 1px solid var(--gray-05);
 }
 
 .toolbar {
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 0 2rem;
+  position: relative;
 
-  > *:last-child {
-    margin-bottom: 4rem;
+  > * {
+    position: absolute;
+    padding: 0 2rem;
+    width: calc(333px);
+    background: var(--gray-00);
+    height: 100%;
+
+    > :last-child {
+      margin-bottom: 6rem;
+    }
   }
 }
 </style>
 
 <style lang="scss" scoped>
-.slide-right-leave-active,
-.slide-right-enter-active {
-  transition: 0.3s;
-}
-.slide-right-enter {
-  transform: translate(100%, 0);
-}
-.slide-right-leave-to {
-  transform: translate(-100%, 0);
+.slide-right {
+  &-enter-active,
+  &-leave-active {
+    border-left: 1px solid var(--gray-05);
+  }
+  &-leave-active {
+    transition: 0.3s;
+  }
+  &-enter-active {
+    transition: 0.4s;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  &-enter-from {
+    transform: translate(100%, 0);
+  }
+  &-leave-to {
+    transform: translate(-100%, 0);
+  }
 }
 
-.slide-left-leave-active,
-.slide-left-enter-active {
-  transition: 0.3s;
-}
-.slide-left-enter {
-  transform: translate(-100%, 0);
-}
-.slide-left-leave-to {
-  transform: translate(100%, 0);
+.slide-left {
+  &-enter-active,
+  &-leave-active {
+    border-right: 1px solid var(--gray-05);
+  }
+  &-leave-active {
+    transition: 0.3s;
+  }
+  &-enter-active {
+    transition: 0.4s;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  &-enter-from {
+    transform: translate(-100%, 0);
+  }
+  &-leave-to {
+    transform: translate(100%, 0);
+  }
 }
 
 /* .slide-right-enter-from,

@@ -4,7 +4,6 @@
     <panel-page-size />
     <panel-margins />
     <panel-settings />
-    <panel-output />
   </div>
 </template>
 
@@ -14,7 +13,6 @@ import PanelSettings from "./PanelSettings.vue";
 import PanelPageSize from "./PanelPageSize.vue";
 import PanelMargins from "./PanelMargins.vue";
 import PanelTypography from "./PanelTypography.vue";
-import PanelOutput from "./PanelOutput.vue";
 
 export default defineComponent({
   name: "Toolbar",
@@ -22,8 +20,7 @@ export default defineComponent({
     PanelSettings,
     PanelPageSize,
     PanelMargins,
-    PanelTypography,
-    PanelOutput
+    PanelTypography
   }
 });
 </script>
