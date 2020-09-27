@@ -35,5 +35,10 @@ export default defineComponent({
 
 .footer {
   padding: 2rem;
+  color: var(--gray-10);
+  a {
+    color: var(--gray-10);
+    text-decoration: underline dotted var(--gray-05);
+  }
 }
 </style>

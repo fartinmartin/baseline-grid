@@ -26,7 +26,7 @@
 
 <script lang="ts">
 // 🚨 TODO:
-// This could/should be ever present (as a "snackbar"-like notification attached to ToolbarHeader or ToolbarFooter?)
+// This could/should <transition>ed (fade?) to feel like it fits with toolbar panel transitions
 
 import { defineComponent } from "vue";
 import useToolbar from "@/composables/useToolbar";
@@ -47,7 +47,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .message {
-  padding: 1rem 2rem;
+  /* padding: 1rem 2rem; */
+  padding: 2rem;
   border: 2px solid var(--border-color);
   border-right: none;
   border-left: none;
