@@ -1,13 +1,13 @@
 <template>
   <div class="page-wrap">
-    <div id="page" :style="`width: ${widthPt}px; height: ${heightPt}px;`">
-      <div id="margin" :style="`top: ${topPt}px; bottom: ${bottomPt}px`">
+    <div id="page" :style="pageStyle">
+      <div id="margin" :style="marginStyle">
         <div id="baseline-grid">
           <div
-            v-for="(line, index) in lines"
+            v-for="(line, index) in linesRoundedUp"
             :key="index"
             class="line"
-            :style="`margin-top: ${leading}px;`"
+            :style="lineStyle"
           />
         </div>
       </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
@@ -24,17 +24,23 @@ export default defineComponent({
   setup() {
     const { widthPt, heightPt, topPt, bottomPt, lines, leading } = useToolbar();
 
-    // why are these refs only reactive in the template?
+    const pageStyle = computed(
+      () => `width: ${widthPt.value}px; height: ${heightPt.value}px;`
+    );
 
-    // const pageStyle = `width: ${widthPt.value}px; height: ${heightPt.value}px;`;
-    // const marginStyle = `top: ${topPt.value}px; bottom: ${bottomPt.value}px`;
-    // const lineStyle = `margin-top: ${leading.value}px`;
+    const marginStyle = computed(
+      () => `top: ${topPt.value}px; bottom: ${bottomPt.value}px`
+    );
+
+    const lineStyle = computed(() => `margin-top: ${leading.value - 1}px`);
+
+    const linesRoundedUp = computed(() => Math.ceil(lines.value));
 
     return {
-      widthPt,
-      heightPt,
-      topPt,
-      bottomPt,
+      pageStyle,
+      marginStyle,
+      lineStyle,
+      linesRoundedUp,
       leading,
       lines
     };
@@ -65,7 +71,11 @@ export default defineComponent({
   position: absolute;
   left: 5.8823529%;
   right: 5.8823529%;
-  /* overflow: hidden; */
+  overflow: hidden;
+}
+
+#baseline-grid {
+  margin-top: -1px;
 }
 
 .line {

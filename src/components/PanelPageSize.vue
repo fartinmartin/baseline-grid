@@ -24,6 +24,7 @@
             type="radio"
             name="orientation"
             v-model="orientation"
+            @click="setOrientation"
           />
           <label for="portrait" class="serif">Portrait</label>
         </div>
@@ -34,6 +35,7 @@
             type="radio"
             name="orientation"
             v-model="orientation"
+            @click="setOrientation"
           />
           <label for="landscape" class="serif">Landscape</label>
         </div>
@@ -56,10 +58,22 @@ export default defineComponent({
   setup() {
     const { width, height, orientation, unit, preset } = useToolbar();
 
+    const setOrientation = (event: { target: HTMLInputElement }) => {
+      const target = event.target.id;
+      if (
+        (target === "landscape" && width.value < height.value) ||
+        (target === "portrait" && width.value > height.value)
+      ) {
+        [width.value, height.value] = [height.value, width.value];
+        orientation.value = target;
+      }
+    };
+
     return {
       width,
       height,
       orientation,
+      setOrientation,
       unit,
       preset,
       pagePresets

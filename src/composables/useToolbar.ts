@@ -1,20 +1,24 @@
 import pagePresets from "@/assets/data/page-presets.json";
 import unitPresets from "@/assets/data/unit-presets.json";
-import { PageOption, PagePreset, PresetGroup, UnitOption } from "@/types";
-import { flattenPresetGroup as _fpg } from "@/utils/flattenPresetGroup";
+import {
+  Orientation,
+  PageOption,
+  PagePreset,
+  PresetGroup,
+  UnitOption
+} from "@/types";
+import { flattenPresetGroup as _fpg, roundTo } from "@/utils";
 import { computed, reactive, ref, toRefs, watch } from "vue";
 
 const units: PresetGroup[] = unitPresets;
 const pages: PresetGroup[] = pagePresets;
 
-const roundTo = (n: number, p: number): number => {
-  const m = Math.pow(10, p || 0);
-  return Math.round(n * m) / m;
-};
+const currentPanel = ref<"ToolbarCalc" | "ToolbarFixes">("ToolbarCalc");
 
 const leading = ref(12);
 const unit = ref<UnitOption>("picas");
 const preset = ref<PageOption>("letter");
+const orientation = ref<Orientation>("portrait");
 
 const dimensions = reactive({
   width: 51,
@@ -43,15 +47,11 @@ export default function useTest() {
     () => _fpg(units).filter(i => i.id === unit.value)[0].step
   );
 
-  const orientation = computed(() =>
-    dimensions.width > dimensions.height ? "landscape" : "portrait"
-  );
+  const widthPt = computed(() => roundTo(dimensions.width / factor.value, 4));
+  const heightPt = computed(() => roundTo(dimensions.height / factor.value, 4));
 
-  const widthPt = computed(() => Math.round(dimensions.width / factor.value));
-  const heightPt = computed(() => Math.round(dimensions.height / factor.value));
-
-  const topPt = computed(() => Math.round(margins.top / factor.value));
-  const bottomPt = computed(() => Math.round(margins.bottom / factor.value));
+  const topPt = computed(() => roundTo(margins.top / factor.value, 4));
+  const bottomPt = computed(() => roundTo(margins.bottom / factor.value, 4));
 
   const area = computed(() => heightPt.value - topPt.value - bottomPt.value);
   const lines = computed(() => area.value / leading.value);
@@ -62,14 +62,14 @@ export default function useTest() {
     (unit, prevUnit) => {
       const prevFactor = _fpg(units).filter(i => i.id === prevUnit)[0].factor;
 
-      const prevWidth = Math.round(dimensions.width / prevFactor);
-      const prevHeight = Math.round(dimensions.height / prevFactor);
+      const prevWidth = roundTo(dimensions.width / prevFactor, 4);
+      const prevHeight = roundTo(dimensions.height / prevFactor, 4);
 
       dimensions.width = roundTo(prevWidth * factor.value, 4);
       dimensions.height = roundTo(prevHeight * factor.value, 4);
 
-      const prevTop = Math.round(margins.top / prevFactor);
-      const prevBottom = Math.round(margins.bottom / prevFactor);
+      const prevTop = roundTo(margins.top / prevFactor, 4);
+      const prevBottom = roundTo(margins.bottom / prevFactor, 4);
 
       margins.top = roundTo(prevTop * factor.value, 4);
       margins.bottom = roundTo(prevBottom * factor.value, 4);
@@ -80,19 +80,40 @@ export default function useTest() {
     () => preset,
     // eslint-disable-next-line
     (preset, prevPreset) => {
+      // TODO:
+      // if !preset.prefersLandscape then see below, else invert width and height!
       dimensions.width = ((pagePreset as unknown) as PagePreset).dimensions.width;
       dimensions.height = ((pagePreset as unknown) as PagePreset).dimensions.height;
     }
   );
 
   watch(
-    () => dimensions,
+    dimensions,
     // eslint-disable-next-line
     (dimensions, prevDimensions) => {
+      orientation.value =
+        dimensions.width > dimensions.height ? "landscape" : "portrait";
       // TODO:
       // if dimensions or inverted dimensions match any preset then preset = preset;
     }
   );
+
+  // const onPaste = async (event: ClipboardEvent, value: Ref) => {
+  //   console.log(event.target);
+  //   const clipData = event.clipboardData || (window as any).clipboardData;
+  //   const text: string = clipData.getData("Text");
+
+  //   let parsedText = 0;
+
+  //   if (text.includes("p")) {
+  //     const parts = text.split("p");
+  //     parsedText = +parts[0] + +parts[1] / 12;
+  //   }
+
+  //   console.log(value, parsedText);
+
+  //   value.value = parsedText;
+  // };
 
   return {
     ...toRefs(dimensions),
@@ -106,6 +127,9 @@ export default function useTest() {
     topPt,
     bottomPt,
     lines,
-    step
+    area,
+    step,
+    // onPaste,
+    currentPanel
   };
 }

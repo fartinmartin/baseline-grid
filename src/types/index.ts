@@ -43,3 +43,5 @@ export type PageOption =
   | "businessCard"
   | "cd"
   | "custom";
+
+export type Orientation = "landscape" | "portrait";

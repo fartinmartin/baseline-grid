@@ -13,3 +13,15 @@ export const flattenPresetGroup = (array: PresetGroup[]) => {
     .filter(item => typeof item !== "string" && item)
     .flat();
 };
+
+export const roundTo = (n: number, p: number): number => {
+  const m = Math.pow(10, p || 0);
+  return Math.round(n * m) / m;
+};
+
+export const swap = (a: unknown, b: unknown) => {
+  const prevA = a;
+  const prevB = b;
+  a = prevB;
+  b = prevA;
+};

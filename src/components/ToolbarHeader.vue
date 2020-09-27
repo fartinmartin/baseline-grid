@@ -1,16 +1,26 @@
 <template>
   <header class="header">
-    <h1>Baseline Grid</h1>
+    <h1 @click="currentPanel = 'ToolbarCalc'" :class="{ active: isCalc }">
+      Baseline Grid
+    </h1>
     <span class="divider">/</span>
-    <span>Your Options</span>
+    <span @click="currentPanel = 'ToolbarFixes'" :class="{ active: !isCalc }">
+      Your Options
+    </span>
   </header>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
+import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
-  name: "ToolbarHeader"
+  name: "ToolbarHeader",
+  setup() {
+    const { currentPanel } = useToolbar();
+    const isCalc = computed(() => currentPanel.value === "ToolbarCalc");
+    return { currentPanel, isCalc };
+  }
 });
 </script>
 
@@ -25,12 +35,20 @@ export default defineComponent({
   display: flex;
 }
 
-.divider {
+span.divider {
   margin: 0 0.25em;
+  cursor: auto;
 }
 
+h1,
 span {
   font-weight: 700;
   opacity: 0.25;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.active {
+  opacity: 1;
 }
 </style>
