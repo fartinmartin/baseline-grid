@@ -20,6 +20,8 @@ import ToolbarCalc from "./ToolbarCalc.vue";
 import ToolbarFixes from "./ToolbarFixes.vue";
 import useToolbar from "@/composables/useToolbar";
 
+import pagePresets from "@/assets/data/page-presets.json";
+
 export default defineComponent({
   name: "Toolbar",
   components: {
@@ -29,11 +31,11 @@ export default defineComponent({
     ToolbarFixes
   },
   setup() {
-    const { currentPanel } = useToolbar();
+    const { currentPanel, preset } = useToolbar();
     const transition = computed(() =>
       currentPanel.value === "ToolbarCalc" ? `slide-left` : `slide-right`
     );
-    return { currentPanel, transition };
+    return { currentPanel, transition, preset, pagePresets };
   }
 });
 </script>
@@ -112,10 +114,10 @@ export default defineComponent({
   }
 }
 
-/* .slide-right-enter-from,
+.slide-right-enter-from,
 .slide-left-enter-from,
 .slide-right-leave-to,
 .slide-left-leave-to {
   opacity: 0;
-} */
+}
 </style>

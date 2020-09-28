@@ -1,12 +1,12 @@
 import { PresetGroup } from "@/types";
 
-// Typings in comment below work.. but cause headaches 🤷‍♂️
-
-// export const flattenPresetGroup = (
-//   array: PresetGroup[]
-// ): PagePreset[] | UnitPreset[] => {
-
 export const flattenPresetGroup = (array: PresetGroup[]) => {
+  // Typings in comment below work.. but cause headaches 🤷‍♂️
+
+  // export const flattenPresetGroup = (
+  //   array: PresetGroup[]
+  // ): PagePreset[] | UnitPreset[] => {
+
   return array
     .map(group => Object.entries(group))
     .flat(2)

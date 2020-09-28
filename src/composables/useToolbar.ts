@@ -29,9 +29,9 @@ export default function useTest() {
     () => _fpg(units).filter(i => i.id === unit.value)[0].factor
   );
 
-  // const currentUnitPreset = computed(
-  //   () => _fpg(units).filter(i => i.id === unit.value)[0]
-  // );
+  const currentUnitPreset = computed(
+    () => _fpg(units).filter(i => i.id === unit.value)[0]
+  );
 
   const currentPagePreset = computed(
     () => _fpg(pages).filter(i => i.id === preset.value)[0]
@@ -122,6 +122,8 @@ export default function useTest() {
     area,
     step,
     // onPaste,
-    currentPanel
+    currentPanel,
+    currentPagePreset,
+    currentUnitPreset
   };
 }

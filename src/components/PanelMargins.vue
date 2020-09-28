@@ -2,13 +2,8 @@
   <panel>
     <h3>Margins</h3>
 
-    <number-input name="margin-top" label="Top: " v-model="top" :unit="unit" />
-    <number-input
-      name="margin-bottom"
-      label="Bottom: "
-      v-model="bottom"
-      :unit="unit"
-    />
+    <number-input label="Top" v-model="top" />
+    <number-input label="Bottom" v-model="bottom" />
   </panel>
 </template>
 
@@ -22,9 +17,9 @@ export default defineComponent({
   name: "PanelMargins",
   components: { NumberInput, Panel },
   setup() {
-    const { unit, top, bottom } = useToolbar();
+    const { top, bottom } = useToolbar();
 
-    return { unit, top, bottom };
+    return { top, bottom };
   }
 });
 </script>

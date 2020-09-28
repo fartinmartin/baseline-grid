@@ -1,7 +1,7 @@
 <template>
   <div class="input-group">
-    <label :for="name" class="label">{{ label }}</label>
-    <div class="number-wrap">
+    <label class="label">{{ label }}</label>
+    <div class="number-input" :class="{ active }">
       <div class="controls">
         <button
           class="button increment"
@@ -10,7 +10,7 @@
           :disabled="disabled || !canIncrease"
           @click="increase"
         >
-          ▲
+          <img src="@/assets/images/arrow.svg" />
         </button>
         <button
           class="button decrement"
@@ -19,84 +19,81 @@
           :disabled="disabled || !canDecrease"
           @click="decrease"
         >
-          ▼
+          <img src="@/assets/images/arrow.svg" />
         </button>
       </div>
-      <div class="input">
-        <input
-          ref="inputRef"
-          type="number"
-          :id="name"
-          :name="name"
-          :min="min"
-          :max="max"
-          :step="step"
-          :placeholder="placeholder"
-          :disabled="disabled || (!canDecrease && !canIncrease)"
-          :value="modelValue"
-          @input="$emit('update:modelValue', $event.target.value)"
-        />
-      </div>
-      <div v-if="unit" class="input-append">
-        <span class="unit">{{ unit }}</span>
-      </div>
+      <input
+        class="number-input-field"
+        ref="inputRef"
+        type="number"
+        :id="name"
+        :name="name"
+        :min="min"
+        :max="max"
+        :step="step"
+        :placeholder="placeholder"
+        :disabled="disabled || (!canDecrease && !canIncrease)"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
+      />
+      <select-input
+        v-model:selected="unit"
+        :options="unitPresets"
+        :freeze="freeze"
+        :tabindex="-1"
+        append
+      />
+      <!-- @click="!freeze ? (active = true) : null" -->
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
+import unitPresets from "@/assets/data/unit-presets.json";
+import SelectInput from "./SelectInput.vue";
+import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
   name: "NumberInput",
+  components: { SelectInput },
   props: {
     label: String,
-
-    name: {
-      type: String,
-      required: true,
-      default: undefined
-    },
-
-    unit: {
-      type: String,
-      default: "picas"
-    },
-
     modelValue: {
       type: Number,
       default: NaN
     },
-
     min: {
       type: Number,
       default: 1
     },
-
     max: {
       type: Number,
       default: Infinity
     },
-
     step: {
       type: Number,
       default: 1
     },
-
     placeholder: {
       type: String,
       default: undefined
     },
-
     disabled: {
       type: Boolean,
       default: false
+    },
+    freeze: {
+      type: String
     }
   },
   setup(props, { emit }) {
+    const { unit } = useToolbar();
     const inputRef = (ref(null) as unknown) as { value: HTMLInputElement };
     const canIncrease = computed(() => props.modelValue < props.max);
     const canDecrease = computed(() => props.modelValue > props.min);
+    const name = computed(() => props.modelValue.toString().toLowerCase());
+    const active = ref(false);
 
     const change = (event: InputEvent) => emit("change", event);
 
@@ -125,60 +122,92 @@ export default defineComponent({
       emit("update:modelValue", newValue);
     };
 
+    // if buttons are clicked OR input:focus OR select is used, set active to true
+    // if anything else is clicked set active to false
+    // if input:invalid deal with red styles
+
     return {
       inputRef,
       canIncrease,
       canDecrease,
       change,
       increase,
-      decrease
+      decrease,
+      unit,
+      unitPresets,
+      name,
+      active
     };
   }
 });
 </script>
 
 <style lang="scss" scoped>
-.number-wrap {
+.number-input {
   display: flex;
-  align-items: baseline;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--gray-20);
+
+  &.active {
+    border: 2px solid var(--active-color);
+    box-shadow: 0 0 4px 4px var(--active-color-light);
+  }
+
+  > .input-group {
+    margin-top: 0;
+  }
 }
 
 .controls {
-  width: 2rem;
-  height: 2rem;
+  width: var(--input-height);
+  height: var(--input-height);
 
   display: flex;
   flex-direction: column;
-  align-self: start;
 
-  button {
-    width: 2rem;
-    height: 1rem;
-    font-size: 0.5rem;
-    border-radius: 0;
+  .button {
+    width: var(--input-height);
+    height: calc(var(--input-height) / 2);
+    font-size: 0.75rem;
+    border: none;
 
-    &:nth-of-type(1) {
-      border-top-left-radius: var(--border-radius);
-      border-bottom: none;
+    display: grid;
+    place-items: center;
+
+    img {
+      width: 1rem;
+      height: 1rem;
     }
 
-    &:nth-of-type(2) {
+    &.increment {
+      border-top-left-radius: var(--border-radius);
+      border-bottom: none;
+
+      img {
+        transform: rotate(180deg);
+      }
+    }
+
+    &.decrement {
       border-bottom-left-radius: var(--border-radius);
       border-top: none;
     }
   }
 }
 
-.input {
-  input {
-    border-left: none;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    text-align: right;
-    padding-right: 0.5rem;
-    width: 100%;
+.number-input-field {
+  border: 2px solid var(--gray-20);
+  border-top: none;
+  border-bottom: none;
+
+  padding: 0 1rem;
+  text-align: right;
+  flex: 1 1 auto;
+  width: 7ch;
+
+  &:invalid {
+    box-shadow: none;
   }
-  margin-right: 0.5rem;
 }
 
 /* Remove number input controls */

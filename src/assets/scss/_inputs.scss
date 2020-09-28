@@ -5,11 +5,8 @@
 input,
 select,
 button {
-  height: 2rem;
   padding: 0;
   margin: 0;
-  border: 1px solid var(--black);
-  border-radius: var(--border-radius);
 }
 
 input {
@@ -20,7 +17,7 @@ label:not(.serif) {
   font-family: var(--sans-serif);
   font-size: 0.875rem;
   text-transform: uppercase;
-  letter-spacing: 0.0125em;
+  letter-spacing: 0.05em;
   font-weight: 700;
   opacity: 0.5;
   margin-bottom: 0.25rem;

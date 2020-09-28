@@ -2,20 +2,11 @@
   <panel>
     <h3>Typography</h3>
 
-    <!-- <number-input
-      name="font-size"
-      label="Font Size: "
-      v-model="fontSize"
-      unit="pt"
-      :disabled="true"
-    /> -->
-
     <number-input
-      name="leading"
-      label="Leading: "
+      label="Leading"
       v-model="leading"
-      unit="pt"
       :step="0.1"
+      freeze="points"
     />
   </panel>
 </template>

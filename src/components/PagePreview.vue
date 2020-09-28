@@ -16,6 +16,10 @@
 </template>
 
 <script lang="ts">
+// TODO:
+// Allow users to click and drag to scroll when there is overflow.
+// See: https://htmldom.dev/drag-to-scroll/
+
 import { computed, defineComponent } from "vue";
 import useToolbar from "@/composables/useToolbar";
 
@@ -55,7 +59,7 @@ export default defineComponent({
 
   width: 100%;
   height: 100vh;
-  overflow-x: hidden;
+  overflow-x: scroll;
   overflow-y: auto;
 
   background: var(--gray-05);
@@ -67,6 +71,30 @@ export default defineComponent({
   box-sizing: content-box;
   border: 1px solid var(--black);
   box-shadow: 2px 2px 0px 0px var(--black);
+  margin: 5.5rem;
+
+  // to force a right & bottom margin of 5.5rem
+  &::before {
+    content: "";
+    position: relative;
+    display: block;
+    top: 0;
+    left: 100%;
+    width: 5.5rem;
+    height: 100%;
+    /* background: red; */
+  }
+
+  &::after {
+    content: "";
+    position: relative;
+    display: block;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5.5rem;
+    /* background: green; */
+  }
 }
 
 #margin {

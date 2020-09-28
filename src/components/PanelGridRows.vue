@@ -5,20 +5,24 @@
       <h3>Grid Rows</h3>
     </div>
 
-    <number-input name="gutter" label="Gutter: " v-model="gutter" unit="pt" />
-    <number-input name="rows" label="Rows: " v-model="rows" unit="" />
+    <number-input label="Gutter" v-model="gutter" freeze="points" />
+    <number-input label="Rows" v-model="rows" freeze="rows" />
   </panel>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import NumberInput from "./NumberInput.vue";
 import Panel from "./Panel.vue";
-// import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
   name: "PanelGridRows",
-  components: { NumberInput, Panel }
+  components: { NumberInput, Panel },
+  setup() {
+    const gutter = ref(12);
+    const rows = 12;
+    return { gutter, rows };
+  }
 });
 </script>
 

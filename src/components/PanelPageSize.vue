@@ -2,16 +2,11 @@
   <panel>
     <h3>Page Size</h3>
 
-    <select-input
-      id="page-presets"
-      label="Presets: "
-      v-model="preset"
-      :options="pagePresets"
-    />
+    <select-input label="Presets" v-model:selected="preset" :options="pages" />
 
     <div>
-      <number-input name="w" label="Width: " v-model="width" :unit="unit" />
-      <number-input name="h" label="Height: " v-model="height" :unit="unit" />
+      <number-input label="Width" v-model="width" />
+      <number-input label="Height" v-model="height" />
     </div>
 
     <div class="input-group orientation">
@@ -46,7 +41,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import pagePresets from "@/assets/data/page-presets.json";
+import pages from "@/assets/data/page-presets.json";
 import Panel from "./Panel.vue";
 import SelectInput from "./SelectInput.vue";
 import NumberInput from "./NumberInput.vue";
@@ -76,7 +71,7 @@ export default defineComponent({
       setOrientation,
       unit,
       preset,
-      pagePresets
+      pages
     };
   }
 });
