@@ -1,22 +1,24 @@
 <template>
-  <div>
-    <panel>
-      <h1>hi</h1>
-    </panel>
+  <div class="fixes-wrap">
+    <h2>hi</h2>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Panel from "./Panel.vue";
 import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
   name: "ToolbarFixes",
-  components: { Panel },
   setup() {
     const { currentPanel } = useToolbar();
     return { currentPanel };
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.fixes-wrap {
+  padding: 2rem;
+}
+</style>

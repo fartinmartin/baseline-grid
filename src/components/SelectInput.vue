@@ -143,7 +143,7 @@ export default defineComponent({
   height: 100%;
 
   background-color: var(--white);
-  border: 2px solid var(--gray-20);
+  border: 2px solid var(--gray-10);
   border-radius: var(--border-radius);
 
   cursor: pointer;
@@ -160,8 +160,9 @@ export default defineComponent({
     svg {
       width: 1rem;
       height: 1rem;
-      display: grid;
-      place-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 
@@ -191,7 +192,7 @@ export default defineComponent({
   box-shadow: 0 0 4px 4px var(--active-color-light);
 
   .option-group {
-    border-top: 1px dotted var(--gray-20);
+    border-top: 1px dotted var(--gray-10);
     padding: 0.75rem 0;
 
     &:first-of-type {
@@ -207,7 +208,7 @@ export default defineComponent({
     }
 
     &.disabled {
-      color: var(--gray-10);
+      color: var(--gray-30);
       &:hover {
         cursor: not-allowed;
       }

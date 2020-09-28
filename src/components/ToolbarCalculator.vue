@@ -12,11 +12,11 @@
     <panel header="Page Size">
       <select-input label="Presets" v-model:selected="preset" :options="pp" />
 
-      <number-input label="Width" v-model="width" />
+      <number-input label="Width" v-model="width" optional />
       <number-input label="Height" v-model="height" />
 
       <div class="input-group orientation">
-        <label>Orientation:</label>
+        <label>Orientation</label>
         <div class="orientation-choices">
           <div class="radio-group">
             <input
@@ -49,7 +49,7 @@
       <number-input label="Bottom" v-model="bottom" />
     </panel>
 
-    <panel header="Grid Rows">
+    <panel header="Grid Rows" optional>
       <number-input label="Gutter" v-model="gutter" freeze="points" />
       <number-input label="Rows" v-model="rows" freeze="rows" />
     </panel>
@@ -58,14 +58,16 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import NumberInput from "./SelectInput.vue";
-import SelectInput from "./NumberInput.vue";
+import Panel from "./Panel.vue";
+import SelectInput from "./SelectInput.vue";
+import NumberInput from "./NumberInput.vue";
 import pp from "@/assets/data/page-presets.json";
 import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
-  name: "Toolbar",
+  name: "ToolbarCalculator",
   components: {
+    Panel,
     NumberInput,
     SelectInput
   },

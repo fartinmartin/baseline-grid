@@ -54,15 +54,16 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .page-wrap {
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   width: 100%;
   height: 100vh;
   overflow-x: scroll;
   overflow-y: auto;
 
-  background: var(--gray-05);
+  background: var(--gray-50);
 }
 
 #page {

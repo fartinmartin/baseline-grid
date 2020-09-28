@@ -1,6 +1,6 @@
 <template>
   <footer class="footer-wrap">
-    <panel-output />
+    <calc-output />
     <div class="footer">
       <span>
         Made by
@@ -17,11 +17,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import PanelOutput from "./PanelOutput.vue";
+import CalcOutput from "./CalcOutput.vue";
 
 export default defineComponent({
   name: "ToolbarFooter",
-  components: { PanelOutput }
+  components: { CalcOutput }
 });
 </script>
 
@@ -35,10 +35,10 @@ export default defineComponent({
 
 .footer {
   padding: 2rem;
-  color: var(--gray-10);
+  color: var(--gray-30);
   a {
-    color: var(--gray-10);
-    text-decoration: underline dotted var(--gray-05);
+    color: var(--gray-30);
+    text-decoration: underline dotted var(--gray-50);
   }
 }
 </style>

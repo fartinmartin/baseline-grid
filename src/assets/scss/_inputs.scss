@@ -9,18 +9,14 @@ button {
   margin: 0;
 }
 
-input {
-  padding-left: 0.5rem;
-}
-
 label:not(.serif) {
   font-family: var(--sans-serif);
   font-size: 0.875rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.0275em;
   font-weight: 700;
-  opacity: 0.5;
-  margin-bottom: 0.25rem;
+  color: var(--gray-40);
+  margin-bottom: 0.5rem;
 }
 
 button,
@@ -33,5 +29,5 @@ input[type="radio"] + label {
 .input-group {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }

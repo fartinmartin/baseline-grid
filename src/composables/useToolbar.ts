@@ -7,7 +7,9 @@ import { computed, reactive, ref, toRefs, watch } from "vue";
 const units: PresetGroup[] = unitPresets;
 const pages: PresetGroup[] = pagePresets;
 
-const currentPanel = ref<"ToolbarCalc" | "ToolbarFixes">("ToolbarCalc");
+const currentPanel = ref<"ToolbarCalculator" | "ToolbarFixes">(
+  "ToolbarCalculator"
+);
 
 const leading = ref(12);
 const unit = ref<UnitOption>("picas");
@@ -93,7 +95,6 @@ export default function useTest() {
 
   // listen for pastes, then parse any letters and convert as necessary (eg. 41p6 == 46.5 picas)
   // const onPaste = async (event: ClipboardEvent, value: Ref) => {
-  //   console.log(event.target);
   //   const clipData = event.clipboardData || (window as any).clipboardData;
   //   const text: string = clipData.getData("Text");
 

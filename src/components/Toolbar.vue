@@ -16,7 +16,7 @@
 import { computed, defineComponent } from "vue";
 import ToolbarHeader from "./ToolbarHeader.vue";
 import ToolbarFooter from "./ToolbarFooter.vue";
-import ToolbarCalc from "./ToolbarCalc.vue";
+import ToolbarCalculator from "./ToolbarCalculator.vue";
 import ToolbarFixes from "./ToolbarFixes.vue";
 import useToolbar from "@/composables/useToolbar";
 
@@ -27,13 +27,13 @@ export default defineComponent({
   components: {
     ToolbarHeader,
     ToolbarFooter,
-    ToolbarCalc,
+    ToolbarCalculator,
     ToolbarFixes
   },
   setup() {
     const { currentPanel, preset } = useToolbar();
     const transition = computed(() =>
-      currentPanel.value === "ToolbarCalc" ? `slide-left` : `slide-right`
+      currentPanel.value === "ToolbarCalculator" ? `slide-left` : `slide-right`
     );
     return { currentPanel, transition, preset, pagePresets };
   }
@@ -50,7 +50,7 @@ export default defineComponent({
   background: var(--gray-00);
 
   overflow-x: hidden;
-  border-right: 1px solid var(--gray-05);
+  border-right: 1px solid var(--gray-50);
 }
 
 .toolbar {
@@ -61,7 +61,6 @@ export default defineComponent({
 
   > * {
     position: absolute;
-    padding: 0 2rem;
     width: calc(333px);
     background: var(--gray-00);
     height: 100%;
@@ -77,7 +76,7 @@ export default defineComponent({
 .slide-right {
   &-enter-active,
   &-leave-active {
-    border-left: 1px solid var(--gray-05);
+    border-left: 1px solid var(--gray-50);
   }
   &-leave-active {
     transition: 0.3s;
@@ -97,7 +96,7 @@ export default defineComponent({
 .slide-left {
   &-enter-active,
   &-leave-active {
-    border-right: 1px solid var(--gray-05);
+    border-right: 1px solid var(--gray-50);
   }
   &-leave-active {
     transition: 0.3s;

@@ -1,6 +1,9 @@
 <template>
   <div class="input-group">
-    <label class="label">{{ label }}</label>
+    <label class="label">
+      {{ label }}
+      <span v-if="optional"> (optional)</span>
+    </label>
     <div class="number-input" :class="{ active }">
       <div class="controls">
         <button
@@ -35,6 +38,7 @@
         :disabled="disabled || (!canDecrease && !canIncrease)"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
+        @focus="onFocus"
       />
       <select-input
         v-model:selected="unit"
@@ -85,7 +89,8 @@ export default defineComponent({
     },
     freeze: {
       type: String
-    }
+    },
+    optional: { type: Boolean }
   },
   setup(props, { emit }) {
     const { unit } = useToolbar();
@@ -122,6 +127,10 @@ export default defineComponent({
       emit("update:modelValue", newValue);
     };
 
+    const onFocus = (event: { target: HTMLInputElement }) => {
+      event.target.select();
+    };
+
     // if buttons are clicked OR input:focus OR select is used, set active to true
     // if anything else is clicked set active to false
     // if input:invalid deal with red styles
@@ -136,7 +145,8 @@ export default defineComponent({
       unit,
       unitPresets,
       name,
-      active
+      active,
+      onFocus
     };
   }
 });
@@ -144,9 +154,12 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .number-input {
+  // new var to handle boder discrepancy
+  --num-input-height: calc(var(--input-height) - 4px);
+
   display: flex;
   border-radius: var(--border-radius);
-  border: 2px solid var(--gray-20);
+  border: 2px solid var(--gray-10);
 
   &.active {
     border: 2px solid var(--active-color);
@@ -155,28 +168,35 @@ export default defineComponent({
 
   > .input-group {
     margin-top: 0;
+    height: var(--num-input-height);
   }
 }
 
 .controls {
-  width: var(--input-height);
-  height: var(--input-height);
+  width: var(--num-input-height);
+  height: var(--num-input-height);
 
   display: flex;
   flex-direction: column;
 
   .button {
-    width: var(--input-height);
-    height: calc(var(--input-height) / 2);
+    width: var(--num-input-height);
+    height: calc(var(--num-input-height) / 2);
+    background: var(--gray-00);
     font-size: 0.75rem;
     border: none;
 
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     img {
       width: 1rem;
       height: 1rem;
+    }
+
+    &:active {
+      background: var(--gray-20);
     }
 
     &.increment {
@@ -196,7 +216,8 @@ export default defineComponent({
 }
 
 .number-input-field {
-  border: 2px solid var(--gray-20);
+  height: var(--num-input-height);
+  border: 2px solid var(--gray-10);
   border-top: none;
   border-bottom: none;
 
@@ -208,6 +229,10 @@ export default defineComponent({
   &:invalid {
     box-shadow: none;
   }
+}
+
+.label > span {
+  color: var(--gray-30);
 }
 
 /* Remove number input controls */

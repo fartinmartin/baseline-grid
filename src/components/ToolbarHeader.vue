@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <h1 @click="currentPanel = 'ToolbarCalc'" :class="{ active: isCalc }">
+    <h1 @click="currentPanel = 'ToolbarCalculator'" :class="{ active: isCalc }">
       Baseline Grid
     </h1>
     <span class="divider">/</span>
@@ -18,7 +18,7 @@ export default defineComponent({
   name: "ToolbarHeader",
   setup() {
     const { currentPanel } = useToolbar();
-    const isCalc = computed(() => currentPanel.value === "ToolbarCalc");
+    const isCalc = computed(() => currentPanel.value === "ToolbarCalculator");
     return { currentPanel, isCalc };
   }
 });
@@ -29,9 +29,9 @@ export default defineComponent({
   background: var(--white);
   padding: 2rem;
   overflow-x: hidden;
-  border-bottom: 1px solid var(--gray-20);
-  box-shadow: 0px calc(var(--toolbar-fade) * 1px)
-    calc(var(--toolbar-fade) * 1px) var(--gray-00);
+  border-bottom: 1px solid var(--gray-10);
+  /* box-shadow: 0px calc(var(--toolbar-fade) * 1px)
+    calc(var(--toolbar-fade) * 1px) var(--gray-00); */
   z-index: 100;
   display: flex;
 }

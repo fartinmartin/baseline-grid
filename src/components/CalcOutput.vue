@@ -32,7 +32,7 @@ import { defineComponent } from "vue";
 import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
-  name: "PanelOutput",
+  name: "CalcOutput",
   setup() {
     const { lines, currentPanel } = useToolbar();
 
