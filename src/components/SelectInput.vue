@@ -111,6 +111,12 @@ export default defineComponent({
       border: none;
       background: var(--gray-00);
       text-transform: lowercase;
+
+      height: var(--num-input-height);
+
+      &:hover {
+        background: var(--gray-10);
+      }
     }
 
     .options {
@@ -149,7 +155,9 @@ export default defineComponent({
   cursor: pointer;
   user-select: none;
 
-  transition: all 0.2s ease;
+  /* &:hover {
+    background: var(--gray-00);
+  } */
 
   .arrow {
     transition: transform 0.3s ease;

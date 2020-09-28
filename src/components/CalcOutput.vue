@@ -4,6 +4,7 @@
     class="message"
     :class="Number.isInteger(lines) ? 'good-news' : 'bad-news'"
     @click.prevent="onClick"
+    tabindex="-1"
   >
     <span v-if="Number.isInteger(lines)">
       Things are lining up—<br />you're good to go!
@@ -17,7 +18,8 @@
   <button
     v-else
     class="message okay-news"
-    @click.prevent="currentPanel = 'ToolbarCalc'"
+    @click.prevent="currentPanel = 'ToolbarCalculator'"
+    tabindex="-1"
   >
     Okay, got it.<br />
     <span class="cta">← Take me back!</span>

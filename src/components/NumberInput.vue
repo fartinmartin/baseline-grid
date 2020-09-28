@@ -39,6 +39,7 @@
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         @focus="onFocus"
+        @blur="active = false"
       />
       <select-input
         v-model:selected="unit"
@@ -129,6 +130,7 @@ export default defineComponent({
 
     const onFocus = (event: { target: HTMLInputElement }) => {
       event.target.select();
+      active.value = true;
     };
 
     // if buttons are clicked OR input:focus OR select is used, set active to true
@@ -195,6 +197,10 @@ export default defineComponent({
       height: 1rem;
     }
 
+    &:hover {
+      background: var(--gray-10);
+    }
+
     &:active {
       background: var(--gray-20);
     }
@@ -217,6 +223,7 @@ export default defineComponent({
 
 .number-input-field {
   height: var(--num-input-height);
+  border-radius: 0; // cover our bases in iOS Safari
   border: 2px solid var(--gray-10);
   border-top: none;
   border-bottom: none;
@@ -226,8 +233,10 @@ export default defineComponent({
   flex: 1 1 auto;
   width: 7ch;
 
+  &:focus,
   &:invalid {
     box-shadow: none;
+    outline: none;
   }
 }
 

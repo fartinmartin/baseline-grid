@@ -15,33 +15,15 @@
       <number-input label="Width" v-model="width" optional />
       <number-input label="Height" v-model="height" />
 
-      <div class="input-group orientation">
-        <label>Orientation</label>
-        <div class="orientation-choices">
-          <div class="radio-group">
-            <input
-              id="portrait"
-              value="portrait"
-              type="radio"
-              name="orientation"
-              v-model="orientation"
-              @click="setOrientation"
-            />
-            <label for="portrait" class="serif">Portrait</label>
-          </div>
-          <div class="radio-group">
-            <input
-              id="landscape"
-              value="landscape"
-              type="radio"
-              name="orientation"
-              v-model="orientation"
-              @click="setOrientation"
-            />
-            <label for="landscape" class="serif">Landscape</label>
-          </div>
-        </div>
-      </div>
+      <radio-input
+        label="Orientation"
+        v-model="orientation"
+        :options="[
+          { label: 'Portrait', value: 'portrait' },
+          { label: 'Landscape', value: 'landscape' }
+        ]"
+        @click="setOrientation"
+      />
     </panel>
 
     <panel header="Margins">
@@ -59,6 +41,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import Panel from "./Panel.vue";
+import RadioInput from "./RadioInput.vue";
 import SelectInput from "./SelectInput.vue";
 import NumberInput from "./NumberInput.vue";
 import pp from "@/assets/data/page-presets.json";
@@ -69,7 +52,8 @@ export default defineComponent({
   components: {
     Panel,
     NumberInput,
-    SelectInput
+    SelectInput,
+    RadioInput
   },
   setup() {
     const {
@@ -84,7 +68,7 @@ export default defineComponent({
     } = useToolbar();
 
     const setOrientation = (event: { target: HTMLInputElement }) => {
-      const target = event.target.id;
+      const target = event.target.value;
       if (
         (target === "landscape" && width.value < height.value) ||
         (target === "portrait" && width.value > height.value)
