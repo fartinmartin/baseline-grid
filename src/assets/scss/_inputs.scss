@@ -31,3 +31,8 @@ input[type="radio"] + label {
   flex-direction: column;
   margin-top: 1.5rem;
 }
+
+input:disabled {
+  background: var(--gray-10);
+  color: var(--gray-40);
+}

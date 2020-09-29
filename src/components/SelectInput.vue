@@ -3,18 +3,12 @@
     <label v-if="!append">{{ label }}</label>
     <div
       class="select-input"
-      :class="{ append, freeze: freeze }"
+      :class="{ append, freeze: freeze, disabled: disabled }"
       :tabindex="tabindex"
       @blur="open = false"
     >
       <div class="selected" :class="{ open: open }" @click="open = !open">
-        <span>{{
-          selectedName === "Millimeters"
-            ? "mm"
-            : selectedName === "Centimeters"
-            ? "cm"
-            : selectedName
-        }}</span>
+        <span>{{ selectedName }}</span>
         <div v-if="!freeze" class="arrow">
           <img src="@/assets/images/arrow.svg" />
         </div>
@@ -24,7 +18,7 @@
           <div
             v-for="preset in group.presets"
             :key="preset.id"
-            @click="onSelected(preset.id)"
+            @click="!preset.disabled && onSelected(preset.id)"
             class="option"
             :class="{ disabled: preset.disabled }"
           >
@@ -66,6 +60,11 @@ export default defineComponent({
       required: false,
       default: false
     },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     freeze: {
       type: String
     }
@@ -73,10 +72,14 @@ export default defineComponent({
   setup(props, { emit }) {
     const open = ref(false);
     const { currentPagePreset, currentUnitPreset } = useToolbar();
+    // TODO:
+    // The selected name should be more elegant.. and not defined in this "genereic" component 🤷‍♂️
     const selectedName = computed(() =>
       props.append
         ? props.freeze
           ? props.freeze
+          : currentUnitPreset.value.abbreviation
+          ? currentUnitPreset.value.abbreviation
           : currentUnitPreset.value.name
         : currentPagePreset.value.name
     );
@@ -109,13 +112,23 @@ export default defineComponent({
   &.append {
     .selected {
       border: none;
+      border-radius: 0;
       background: var(--gray-00);
+
       text-transform: lowercase;
 
       height: var(--num-input-height);
 
       &:hover {
         background: var(--gray-10);
+      }
+    }
+
+    &.disabled {
+      .selected {
+        background: var(--gray-10);
+        color: var(--gray-40);
+        pointer-events: none;
       }
     }
 

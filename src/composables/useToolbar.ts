@@ -1,7 +1,7 @@
 import pagePresets from "@/assets/data/page-presets.json";
 import unitPresets from "@/assets/data/unit-presets.json";
 import { Orientation, PageOption, PresetGroup, UnitOption } from "@/types";
-import { flattenPresetGroup as _fpg, roundTo } from "@/utils";
+import { flattenPresetGroup as _fpg } from "@/utils";
 import { computed, reactive, ref, toRefs, watch } from "vue";
 
 const units: PresetGroup[] = unitPresets;
@@ -28,7 +28,7 @@ const margins = reactive({
 
 const gutter = ref(12);
 const rows = ref(6);
-const checkMyGridRows = ref(true);
+const checkMyGridRows = ref(false);
 
 export default function useTest() {
   const factor = computed(
@@ -47,11 +47,11 @@ export default function useTest() {
     () => _fpg(units).filter(i => i.id === unit.value)[0].step
   );
 
-  const widthPt = computed(() => roundTo(dimensions.width / factor.value, 4));
-  const heightPt = computed(() => roundTo(dimensions.height / factor.value, 4));
+  const widthPt = computed(() => dimensions.width / factor.value);
+  const heightPt = computed(() => dimensions.height / factor.value);
 
-  const topPt = computed(() => roundTo(margins.top / factor.value, 4));
-  const bottomPt = computed(() => roundTo(margins.bottom / factor.value, 4));
+  const topPt = computed(() => margins.top / factor.value);
+  const bottomPt = computed(() => margins.bottom / factor.value);
 
   const area = computed(() => heightPt.value - topPt.value - bottomPt.value);
   const lines = computed(() => area.value / leading.value);
@@ -65,24 +65,25 @@ export default function useTest() {
     [unit, widthPt, heightPt, topPt, bottomPt],
     ([unit], [prevUnit, pW, pH, pT, pB]) => {
       if (unit !== prevUnit) {
-        dimensions.width = roundTo(+pW * factor.value, 4);
-        dimensions.height = roundTo(+pH * factor.value, 4);
-        margins.top = roundTo(+pT * factor.value, 4);
-        margins.bottom = roundTo(+pB * factor.value, 4);
+        dimensions.width = +pW * factor.value;
+        dimensions.height = +pH * factor.value;
+        margins.top = +pT * factor.value;
+        margins.bottom = +pB * factor.value;
       }
     }
   );
 
   // update dimensions when preset is selected
   watch(preset, () => {
+    if (preset.value === "custom") return;
     const pp = currentPagePreset.value;
     let d;
 
     if (!pp.prefersLandscape) d = pp.dimensions;
     else d = { width: pp.dimensions.height, height: pp.dimensions.width };
 
-    dimensions.width = roundTo(d.width * factor.value, 4);
-    dimensions.height = roundTo(d.height * factor.value, 4);
+    dimensions.width = d.width * factor.value;
+    dimensions.height = d.height * factor.value;
   });
 
   // if dimensions match a preset, update preset
@@ -93,8 +94,10 @@ export default function useTest() {
     const invertMatch = _fpg(pages).find(
       i => i.dimensions.height === width && i.dimensions.width === height
     );
+
     if (directMatch || invertMatch)
       preset.value = directMatch?.id || invertMatch?.id;
+    else preset.value = "custom";
   });
 
   // listen for pastes, then parse any letters and convert as necessary (eg. 41p6 == 46.5 picas)

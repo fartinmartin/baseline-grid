@@ -18,3 +18,6 @@ export const roundTo = (n: number, p: number): number => {
   const m = Math.pow(10, p || 0);
   return Math.round(n * m) / m;
 };
+
+export const fractionStrToDecimal = (str: string) =>
+  str.split("/").reduce((p, c) => p / +c, 0);

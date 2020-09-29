@@ -36,9 +36,16 @@
         label="Gutter"
         v-model="gutter"
         freeze="points"
+        :min="leading"
         :step="leading"
+        :disabled="!checkMyGridRows"
       />
-      <number-input label="Rows" v-model="rows" freeze="rows" />
+      <number-input
+        label="Rows"
+        v-model="rows"
+        freeze="rows"
+        :disabled="!checkMyGridRows"
+      />
     </panel>
   </div>
 </template>

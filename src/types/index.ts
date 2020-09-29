@@ -16,6 +16,7 @@ export interface UnitPreset extends Preset {
 
 export interface PagePreset extends Preset {
   dimensions: { width: number; height: number };
+  abbreviation?: string;
   prefersLandscape?: boolean;
 }
 

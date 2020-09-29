@@ -46,9 +46,9 @@
         :options="unitPresets"
         :freeze="freeze"
         :tabindex="-1"
+        :disabled="disabled"
         append
       />
-      <!-- @click="!freeze ? (active = true) : null" -->
     </div>
   </div>
 </template>
@@ -205,8 +205,16 @@ export default defineComponent({
       background: var(--gray-20);
     }
 
+    &:disabled {
+      background: var(--gray-10);
+      pointer-events: none;
+      img {
+        opacity: 0.25;
+      }
+    }
+
     &.increment {
-      border-top-left-radius: var(--border-radius);
+      /* border-top-left-radius: var(--border-radius); */
       border-bottom: none;
 
       img {
@@ -215,7 +223,7 @@ export default defineComponent({
     }
 
     &.decrement {
-      border-bottom-left-radius: var(--border-radius);
+      /* border-bottom-left-radius: var(--border-radius); */
       border-top: none;
     }
   }

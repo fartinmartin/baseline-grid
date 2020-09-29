@@ -5,7 +5,6 @@
         <input
           type="checkbox"
           v-if="optional"
-          checked="true"
           @change="$emit('update:modelValue', $event.target.checked)"
         />
         <h3 v-if="header">{{ header }}</h3>
@@ -20,7 +19,6 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-// import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
   name: "Panel",
@@ -31,8 +29,8 @@ export default defineComponent({
   },
   setup() {
     const open = ref(true);
-    const handleOpen = (event: { target: HTMLInputElement }) => {
-      if (event.target.type === "checkbox") return;
+    const handleOpen = (event: { target: HTMLElement }) => {
+      if (event.target.tagName === "INPUT") return;
       open.value = !open.value;
     };
 
@@ -99,5 +97,14 @@ export default defineComponent({
   > :first-child {
     margin-top: 0;
   }
+}
+</style>
+
+<style lang="scss" scoped>
+input ~ h3 {
+  color: var(--gray-30);
+}
+input:checked ~ h3 {
+  color: var(--black);
 }
 </style>

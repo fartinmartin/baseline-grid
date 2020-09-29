@@ -2,16 +2,16 @@
   <button
     v-if="currentPanel != 'ToolbarFixes'"
     class="message"
-    :class="Number.isInteger(lines) ? 'good-news' : 'bad-news'"
+    :class="isPassing ? 'good-news' : 'bad-news'"
     @click.prevent="onClick"
     tabindex="-1"
   >
-    <span v-if="Number.isInteger(lines)">
+    <span v-if="isPassing">
       Things are lining up—<br />you're good to go!
     </span>
     <span v-else>
-      You'll need to make some tweaks.
-      <span class="cta">Follow me! →</span>
+      Things aren't quite tracking.<br />
+      <span class="cta">Let's make some tweaks! →</span>
     </span>
   </button>
 
@@ -30,19 +30,32 @@
 // 🚨 TODO:
 // This could/should <transition>ed (fade?) to feel like it fits with toolbar panel transitions
 
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
   name: "CalcOutput",
   setup() {
-    const { lines, currentPanel } = useToolbar();
+    const { lines, currentPanel, checkMyGridRows } = useToolbar();
+
+    const moreComplicatedLogic = computed(() => {
+      // here is where we evaluate grid rows
+      return true;
+    });
+
+    const isPassing = computed(() => {
+      if (checkMyGridRows) {
+        return Number.isInteger(lines.value) && moreComplicatedLogic.value;
+      } else {
+        return Number.isInteger(lines.value);
+      }
+    });
 
     const onClick = () => {
       if (Number.isInteger(lines)) return;
       currentPanel.value = "ToolbarFixes";
     };
-    return { lines, currentPanel, onClick };
+    return { lines, currentPanel, onClick, isPassing };
   }
 });
 </script>
