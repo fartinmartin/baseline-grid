@@ -1,8 +1,13 @@
 <template>
   <div class="panel" :class="{ open }">
-    <div class="header" @click="open = !open">
+    <div class="header" @click="handleOpen">
       <div class="title">
-        <input type="checkbox" v-if="optional" />
+        <input
+          type="checkbox"
+          v-if="optional"
+          checked="true"
+          @change="$emit('update:modelValue', $event.target.checked)"
+        />
         <h3 v-if="header">{{ header }}</h3>
       </div>
       <div class="arrow">
@@ -15,17 +20,23 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+// import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
   name: "Panel",
   props: {
     header: String,
-    optional: Boolean
+    optional: Boolean,
+    modelValue: Boolean
   },
   setup() {
     const open = ref(true);
+    const handleOpen = (event: { target: HTMLInputElement }) => {
+      if (event.target.type === "checkbox") return;
+      open.value = !open.value;
+    };
 
-    return { open };
+    return { open, handleOpen };
   }
 });
 </script>

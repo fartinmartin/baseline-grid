@@ -1,0 +1,11 @@
+Potentially... using data from useToolbar.js we could generate
+our own "src/assets/idml/Spreads/Spread_uce.xml" file. Perhaps
+there are more files to edit (where are page dimensions
+defined? etc.)
+
+We could use this to compress it into a zip with the ".idml" extension?
+https://stuk.github.io/jszip/
+
+I have NO idea if that would work. If it did, it would likely
+be a BAD idea to ever make a serious document from a janky
+template like this... but it could be cool?

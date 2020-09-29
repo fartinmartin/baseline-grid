@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<idPkg:Spread xmlns:idPkg="http://ns.adobe.com/AdobeInDesign/idml/1.0/packaging" DOMVersion="15.1">
+	<Spread Self="uce" PageTransitionType="None" PageTransitionDirection="NotApplicable" PageTransitionDuration="Medium" ShowMasterItems="true" PageCount="1" BindingLocation="0" AllowPageShuffle="true" ItemTransform="1 0 0 1 0 0" FlattenerOverride="Default">
+		<FlattenerPreference LineArtAndTextResolution="300" GradientAndMeshResolution="150" ClipComplexRegions="false" ConvertAllStrokesToOutlines="false" ConvertAllTextToOutlines="false">
+			<Properties>
+				<RasterVectorBalance type="double">50</RasterVectorBalance>
+			</Properties>
+		</FlattenerPreference>
+		<Page Self="ud3" TabOrder="" AppliedMaster="ud5" OverrideList="" MasterPageTransform="1 0 0 1 0 0" Name="1" AppliedTrapPreset="TrapPreset/$ID/kDefaultTrapStyleName" GeometricBounds="0 0 792 612" ItemTransform="1 0 0 1 0 -396" AppliedAlternateLayout="ud4" LayoutRule="UseMaster" SnapshotBlendingMode="IgnoreLayoutSnapshots" OptionalPage="false" GridStartingPoint="TopOutside" UseMasterGrid="true">
+			<Properties>
+				<PageColor type="enumeration">UseMasterColor</PageColor>
+				<Descriptor type="list">
+					<ListItem type="string"></ListItem>
+					<ListItem type="enumeration">Arabic</ListItem>
+					<ListItem type="boolean">true</ListItem>
+					<ListItem type="boolean">false</ListItem>
+					<ListItem type="long">1</ListItem>
+					<ListItem type="string"></ListItem>
+				</Descriptor>
+			</Properties>
+			<Guide Self="u53c" OverriddenPageItemProps="" Orientation="Horizontal" Location="744" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<Guide Self="u53b" OverriddenPageItemProps="" Orientation="Horizontal" Location="636" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<Guide Self="u53a" OverriddenPageItemProps="" Orientation="Horizontal" Location="624" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<Guide Self="u539" OverriddenPageItemProps="" Orientation="Horizontal" Location="516" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<Guide Self="u538" OverriddenPageItemProps="" Orientation="Horizontal" Location="504" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<Guide Self="u537" OverriddenPageItemProps="" Orientation="Horizontal" Location="396" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<Guide Self="u536" OverriddenPageItemProps="" Orientation="Horizontal" Location="384" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<Guide Self="u535" OverriddenPageItemProps="" Orientation="Horizontal" Location="276" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<Guide Self="u534" OverriddenPageItemProps="" Orientation="Horizontal" Location="264" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<Guide Self="u533" OverriddenPageItemProps="" Orientation="Horizontal" Location="156" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<Guide Self="u532" OverriddenPageItemProps="" Orientation="Horizontal" Location="144" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<Guide Self="u531" OverriddenPageItemProps="" Orientation="Horizontal" Location="36" FitToPage="true" ViewThreshold="5" Locked="false" ItemLayer="ucb" PageIndex="1" GuideType="Ruler" GuideZone="1">
+				<Properties>
+					<GuideColor type="enumeration">Orange</GuideColor>
+				</Properties>
+			</Guide>
+			<MarginPreference ColumnCount="1" ColumnGutter="12" Top="36" Bottom="48" Left="36" Right="36" ColumnDirection="Horizontal" ColumnsPositions="0 540" />
+			<GridDataInformation FontStyle="Regular" PointSize="12" CharacterAki="0" LineAki="9" HorizontalScale="100" VerticalScale="100" LineAlignment="LeftOrTopLineJustify" GridAlignment="AlignEmCenter" CharacterAlignment="AlignEmCenter">
+				<Properties>
+					<AppliedFont type="string">Minion Pro</AppliedFont>
+				</Properties>
+			</GridDataInformation>
+		</Page>
+	</Spread>
+</idPkg:Spread>

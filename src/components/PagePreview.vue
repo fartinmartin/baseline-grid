@@ -10,6 +10,26 @@
             :style="lineStyle"
           />
         </div>
+        <div id="grid-bottom-lines" v-if="checkMyGridRows">
+          <div
+            v-for="(row, index) in rows"
+            :key="index"
+            class="guide"
+            :style="guideStyle"
+          />
+        </div>
+        <div
+          id="grid-top-lines"
+          :style="gridTopLinesStyle"
+          v-if="checkMyGridRows"
+        >
+          <div
+            v-for="(row, index) in rows"
+            :key="index"
+            class="guide"
+            :style="guideStyle"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -26,7 +46,18 @@ import useToolbar from "@/composables/useToolbar";
 export default defineComponent({
   name: "PagePreview",
   setup() {
-    const { widthPt, heightPt, topPt, bottomPt, lines, leading } = useToolbar();
+    const {
+      widthPt,
+      heightPt,
+      topPt,
+      bottomPt,
+      lines,
+      leading,
+      area,
+      gutter,
+      rows,
+      checkMyGridRows
+    } = useToolbar();
 
     const pageStyle = computed(
       () => `width: ${widthPt.value}px; height: ${heightPt.value}px;`
@@ -37,16 +68,29 @@ export default defineComponent({
     );
 
     const lineStyle = computed(() => `margin-top: ${leading.value - 1}px`);
-
     const linesRoundedUp = computed(() => Math.ceil(lines.value));
+
+    const rowSize = computed(
+      () => (area.value - gutter.value * (rows.value - 1)) / rows.value
+    );
+    const guideStyle = computed(
+      () => `height: ${rowSize.value}px; margin-top: ${gutter.value}px`
+    );
+    const gridTopLinesStyle = computed(
+      () => `margin-top: ${gutter.value - 1}px`
+    );
 
     return {
       pageStyle,
       marginStyle,
       lineStyle,
+      guideStyle,
       linesRoundedUp,
       leading,
-      lines
+      lines,
+      rows,
+      gridTopLinesStyle,
+      checkMyGridRows
     };
   }
 });
@@ -106,13 +150,30 @@ export default defineComponent({
   overflow: hidden;
 }
 
-#baseline-grid {
+#baseline-grid,
+#grid-top-lines,
+#grid-bottom-lines {
   margin-top: -1px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .line {
   width: 100%;
-  /* transform: translateY(-1px); */
   border-bottom: 1px solid blue;
+}
+
+.guide {
+  width: 100%;
+  border-bottom: 1px solid red;
+  z-index: 100;
+  /* box-sizing: content-box; */
+
+  &:first-of-type {
+    margin-top: 0 !important;
+  }
 }
 </style>

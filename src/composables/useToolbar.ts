@@ -23,8 +23,12 @@ const dimensions = reactive({
 
 const margins = reactive({
   top: 3,
-  bottom: 3
+  bottom: 4
 });
+
+const gutter = ref(12);
+const rows = ref(6);
+const checkMyGridRows = ref(true);
 
 export default function useTest() {
   const factor = computed(
@@ -122,9 +126,12 @@ export default function useTest() {
     lines,
     area,
     step,
+    gutter,
+    rows,
     // onPaste,
     currentPanel,
     currentPagePreset,
-    currentUnitPreset
+    currentUnitPreset,
+    checkMyGridRows
   };
 }

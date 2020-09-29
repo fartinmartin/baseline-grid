@@ -31,15 +31,20 @@
       <number-input label="Bottom" v-model="bottom" />
     </panel>
 
-    <panel header="Grid Rows" optional>
-      <number-input label="Gutter" v-model="gutter" freeze="points" />
+    <panel header="Grid Rows" v-model="checkMyGridRows" optional>
+      <number-input
+        label="Gutter"
+        v-model="gutter"
+        freeze="points"
+        :step="leading"
+      />
       <number-input label="Rows" v-model="rows" freeze="rows" />
     </panel>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import Panel from "./Panel.vue";
 import RadioInput from "./RadioInput.vue";
 import SelectInput from "./SelectInput.vue";
@@ -64,7 +69,10 @@ export default defineComponent({
       unit,
       preset,
       top,
-      bottom
+      bottom,
+      gutter,
+      rows,
+      checkMyGridRows
     } = useToolbar();
 
     const setOrientation = (event: { target: HTMLInputElement }) => {
@@ -78,9 +86,6 @@ export default defineComponent({
       }
     };
 
-    const gutter = ref(12);
-    const rows = ref(7);
-
     return {
       leading,
       pp,
@@ -93,7 +98,8 @@ export default defineComponent({
       top,
       bottom,
       gutter,
-      rows
+      rows,
+      checkMyGridRows
     };
   }
 });
