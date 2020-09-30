@@ -9,6 +9,7 @@ button {
   margin: 0;
 }
 
+.label,
 label:not(.serif) {
   font-family: var(--sans-serif);
   font-size: 0.875rem;

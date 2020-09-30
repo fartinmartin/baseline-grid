@@ -56,6 +56,18 @@ export default function useTest() {
   const area = computed(() => heightPt.value - topPt.value - bottomPt.value);
   const lines = computed(() => area.value / leading.value);
 
+  const rowSize = computed(
+    () => (area.value - gutter.value * (rows.value - 1)) / rows.value
+  );
+
+  const baselineIsPassing = computed(() => Number.isInteger(lines.value));
+  const gridIsPassing = computed(() => rowSize.value % leading.value === 0);
+  const isPassing = computed(() =>
+    checkMyGridRows.value
+      ? gridIsPassing.value && baselineIsPassing.value
+      : baselineIsPassing.value
+  );
+
   watch(dimensions, d => {
     orientation.value = d.width > d.height ? "landscape" : "portrait";
   });
@@ -135,6 +147,10 @@ export default function useTest() {
     currentPanel,
     currentPagePreset,
     currentUnitPreset,
-    checkMyGridRows
+    checkMyGridRows,
+    rowSize,
+    baselineIsPassing,
+    gridIsPassing,
+    isPassing
   };
 }

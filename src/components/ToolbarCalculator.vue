@@ -44,6 +44,7 @@
         label="Rows"
         v-model="rows"
         freeze="rows"
+        :min="2"
         :disabled="!checkMyGridRows"
       />
     </panel>

@@ -30,31 +30,19 @@
 // 🚨 TODO:
 // This could/should <transition>ed (fade?) to feel like it fits with toolbar panel transitions
 
-import { computed, defineComponent } from "vue";
+import { defineComponent } from "vue";
 import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
   name: "CalcOutput",
   setup() {
-    const { lines, currentPanel, checkMyGridRows } = useToolbar();
-
-    const moreComplicatedLogic = computed(() => {
-      // here is where we evaluate grid rows
-      return true;
-    });
-
-    const isPassing = computed(() => {
-      if (checkMyGridRows) {
-        return Number.isInteger(lines.value) && moreComplicatedLogic.value;
-      } else {
-        return Number.isInteger(lines.value);
-      }
-    });
+    const { lines, currentPanel, isPassing } = useToolbar();
 
     const onClick = () => {
-      if (Number.isInteger(lines)) return;
+      if (isPassing.value) return;
       currentPanel.value = "ToolbarFixes";
     };
+
     return { lines, currentPanel, onClick, isPassing };
   }
 });

@@ -38,7 +38,10 @@
         :disabled="disabled || (!canDecrease && !canIncrease)"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
-        @focus="onFocus"
+        @focus="
+          $event.target.select();
+          active = true;
+        "
         @blur="active = false"
       />
       <select-input
@@ -128,13 +131,6 @@ export default defineComponent({
       emit("update:modelValue", newValue);
     };
 
-    const onFocus = (event: { target: HTMLInputElement }) => {
-      event.target.select();
-      active.value = true;
-    };
-
-    // if buttons are clicked OR input:focus OR select is used, set active to true
-    // if anything else is clicked set active to false
     // if input:invalid deal with red styles
 
     return {
@@ -147,8 +143,7 @@ export default defineComponent({
       unit,
       unitPresets,
       name,
-      active,
-      onFocus
+      active
     };
   }
 });
@@ -237,6 +232,7 @@ export default defineComponent({
   border-bottom: none;
 
   padding: 0 1rem;
+  padding-top: 2px; // optical thingy
   text-align: right;
   flex: 1 1 auto;
   width: 7ch;
@@ -245,6 +241,9 @@ export default defineComponent({
   &:invalid {
     box-shadow: none;
     outline: none;
+  }
+  &:disabled {
+    user-select: none;
   }
 }
 

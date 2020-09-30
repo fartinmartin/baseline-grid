@@ -53,7 +53,7 @@ export default defineComponent({
       bottomPt,
       lines,
       leading,
-      area,
+      rowSize,
       gutter,
       rows,
       checkMyGridRows
@@ -70,9 +70,6 @@ export default defineComponent({
     const lineStyle = computed(() => `margin-top: ${leading.value - 1}px`);
     const linesRoundedUp = computed(() => Math.ceil(lines.value));
 
-    const rowSize = computed(
-      () => (area.value - gutter.value * (rows.value - 1)) / rows.value
-    );
     const guideStyle = computed(
       () => `height: ${rowSize.value}px; margin-top: ${gutter.value}px`
     );

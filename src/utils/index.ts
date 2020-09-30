@@ -21,3 +21,36 @@ export const roundTo = (n: number, p: number): number => {
 
 export const fractionStrToDecimal = (str: string) =>
   str.split("/").reduce((p, c) => p / +c, 0);
+
+export const factors = (n: number): number[] =>
+  [...Array(n + 1).keys()].filter(i => n % i === 0);
+
+export const multiples = (number: number, max: number): number[] => {
+  const multiples = [];
+  for (let i = 0; i < max; i++) {
+    const result = number * i;
+    if (result % number === 0) multiples.push(result);
+  }
+  return multiples;
+};
+
+export const closest = (
+  array: number[],
+  target: number
+): { high: number; low: number } => {
+  const payload: { high: number; low: number } = { high: NaN, low: NaN };
+
+  const result = array.reduce((a, b) =>
+    Math.abs(b - target) < Math.abs(a - target) ? b : a
+  );
+
+  if (result > target) {
+    payload.high = result;
+    payload.low = array[array.indexOf(result) - 1];
+  } else {
+    payload.high = array[array.indexOf(result) + 1];
+    payload.low = result;
+  }
+
+  return payload;
+};
