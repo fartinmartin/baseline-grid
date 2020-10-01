@@ -3,66 +3,55 @@ import unitPresets from "@/assets/data/unit-presets.json";
 import {
   OrientationOption,
   PageOption,
+  PanelOption,
   PresetGroup,
   UnitOption
 } from "@/types";
 import { flattenPresetGroup as _fpg } from "@/utils";
-import { computed, reactive, ref, toRefs, watch } from "vue";
+import { computed, reactive, toRefs, watch } from "vue";
 
 const units: PresetGroup[] = unitPresets;
 const pages: PresetGroup[] = pagePresets;
 
-// const global = reactive({
-//   currentPanel: "ToolbarCalculator" as PanelOption,
-//   unit: "picas" as UnitOption, // switch to points eventually
-//   preset: "letter" as PageOption,
-//   orientation: "portrait" as OrientationOption,
-//   checkGrid: false // update this variable name across components
-// });
-
-const currentPanel = ref<"ToolbarCalculator" | "ToolbarFixes">(
-  "ToolbarCalculator"
-);
-
-const leading = ref(12);
-const unit = ref<UnitOption>("picas");
-const preset = ref<PageOption>("letter");
-const orientation = ref<OrientationOption>("portrait");
+const global = reactive({
+  currentPanel: "ToolbarCalculator" as PanelOption,
+  leading: 12,
+  unit: "points" as UnitOption,
+  preset: "letter" as PageOption,
+  orientation: "portrait" as OrientationOption,
+  checkGrid: false // update this variable name across components
+});
 
 const dimensions = reactive({
-  width: 51,
-  height: 66
+  width: 612,
+  height: 792
 });
 
 const margins = reactive({
-  top: 3,
-  bottom: 4
+  top: 36,
+  bottom: 48
 });
 
-// const grid = reactive({
-//   gutter: 12,
-//   rows: 6,
-// })
-
-const gutter = ref(12);
-const rows = ref(6);
-const checkMyGridRows = ref(false);
+const grid = reactive({
+  gutter: 12,
+  rows: 6
+});
 
 export default function useTest() {
   const factor = computed(
-    () => _fpg(units).filter(i => i.id === unit.value)[0].factor
+    () => _fpg(units).filter(i => i.id === global.unit)[0].factor
   );
 
   const currentUnitPreset = computed(
-    () => _fpg(units).filter(i => i.id === unit.value)[0]
+    () => _fpg(units).filter(i => i.id === global.unit)[0]
   );
 
   const currentPagePreset = computed(
-    () => _fpg(pages).filter(i => i.id === preset.value)[0]
+    () => _fpg(pages).filter(i => i.id === global.preset)[0]
   );
 
   const step = computed(
-    () => _fpg(units).filter(i => i.id === unit.value)[0].step
+    () => _fpg(units).filter(i => i.id === global.unit)[0].step
   );
 
   const widthPt = computed(() => dimensions.width / factor.value);
@@ -72,27 +61,27 @@ export default function useTest() {
   const bottomPt = computed(() => margins.bottom / factor.value);
 
   const area = computed(() => heightPt.value - topPt.value - bottomPt.value);
-  const lines = computed(() => area.value / leading.value);
+  const lines = computed(() => area.value / global.leading);
 
   const rowSize = computed(
-    () => (area.value - gutter.value * (rows.value - 1)) / rows.value
+    () => (area.value - grid.gutter * (grid.rows - 1)) / grid.rows
   );
 
   const baselineIsPassing = computed(() => Number.isInteger(lines.value));
-  const gridIsPassing = computed(() => rowSize.value % leading.value === 0);
+  const gridIsPassing = computed(() => rowSize.value % global.leading === 0);
   const isPassing = computed(() =>
-    checkMyGridRows.value
+    global.checkGrid
       ? gridIsPassing.value && baselineIsPassing.value
       : baselineIsPassing.value
   );
 
   watch(dimensions, d => {
-    orientation.value = d.width > d.height ? "landscape" : "portrait";
+    global.orientation = d.width > d.height ? "landscape" : "portrait";
   });
 
   // when new unit is selected update measurements to new unit (but keep their absolute values)
   watch(
-    [unit, widthPt, heightPt, topPt, bottomPt],
+    [() => global.unit, widthPt, heightPt, topPt, bottomPt],
     ([unit], [prevUnit, pW, pH, pT, pB]) => {
       if (unit !== prevUnit) {
         dimensions.width = +pW * factor.value;
@@ -104,17 +93,20 @@ export default function useTest() {
   );
 
   // update dimensions when preset is selected
-  watch(preset, () => {
-    if (preset.value === "custom") return;
-    const pp = currentPagePreset.value;
-    let d;
+  watch(
+    () => global.preset,
+    () => {
+      if (global.preset === "custom") return;
+      const pp = currentPagePreset.value;
+      let d;
 
-    if (!pp.prefersLandscape) d = pp.dimensions;
-    else d = { width: pp.dimensions.height, height: pp.dimensions.width };
+      if (!pp.prefersLandscape) d = pp.dimensions;
+      else d = { width: pp.dimensions.height, height: pp.dimensions.width };
 
-    dimensions.width = d.width * factor.value;
-    dimensions.height = d.height * factor.value;
-  });
+      dimensions.width = d.width * factor.value;
+      dimensions.height = d.height * factor.value;
+    }
+  );
 
   // if dimensions match a preset, update preset
   watch([widthPt, heightPt], ([width, height]) => {
@@ -126,8 +118,8 @@ export default function useTest() {
     );
 
     if (directMatch || invertMatch)
-      preset.value = directMatch?.id || invertMatch?.id;
-    else preset.value = "custom";
+      global.preset = directMatch?.id || invertMatch?.id;
+    else global.preset = "custom";
   });
 
   // listen for pastes, then parse any letters and convert as necessary (eg. 41p6 == 46.5 picas)
@@ -146,12 +138,10 @@ export default function useTest() {
   // };
 
   return {
+    ...toRefs(global),
     ...toRefs(dimensions),
     ...toRefs(margins),
-    leading,
-    unit,
-    preset,
-    orientation,
+    ...toRefs(grid),
     widthPt,
     heightPt,
     topPt,
@@ -159,13 +149,8 @@ export default function useTest() {
     lines,
     area,
     step,
-    gutter,
-    rows,
-    // onPaste,
-    currentPanel,
     currentPagePreset,
     currentUnitPreset,
-    checkMyGridRows,
     rowSize,
     baselineIsPassing,
     gridIsPassing,

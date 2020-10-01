@@ -46,8 +46,8 @@
           <p>You're all set here!</p>
         </div>
       </panel>
-      <panel header="Grid Rows" :disabled="!checkMyGridRows">
-        <div v-if="checkMyGridRows">
+      <panel header="Grid Rows" :disabled="!checkGrid">
+        <div v-if="checkGrid">
           <div v-if="!gridIsPassing">
             <div class="option">
               <h4 class="label">You could...</h4>
@@ -114,7 +114,7 @@ export default defineComponent({
     const {
       currentPanel,
       isPassing,
-      checkMyGridRows,
+      checkGrid,
       heightPt,
       leading,
       baselineIsPassing,
@@ -147,7 +147,7 @@ export default defineComponent({
     return {
       currentPanel,
       isPassing,
-      checkMyGridRows,
+      checkGrid,
       newLeading,
       newMarginHeight,
       newRowSize,

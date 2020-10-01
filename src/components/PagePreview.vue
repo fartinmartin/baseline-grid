@@ -10,7 +10,7 @@
             :style="lineStyle"
           />
         </div>
-        <div id="grid-bottom-lines" v-if="checkMyGridRows">
+        <div id="grid-bottom-lines" v-if="checkGrid">
           <div
             v-for="(row, index) in rows"
             :key="index"
@@ -18,11 +18,7 @@
             :style="guideStyle"
           />
         </div>
-        <div
-          id="grid-top-lines"
-          :style="gridTopLinesStyle"
-          v-if="checkMyGridRows"
-        >
+        <div id="grid-top-lines" :style="gridTopLinesStyle" v-if="checkGrid">
           <div
             v-for="(row, index) in rows"
             :key="index"
@@ -56,7 +52,7 @@ export default defineComponent({
       rowSize,
       gutter,
       rows,
-      checkMyGridRows
+      checkGrid
     } = useToolbar();
 
     const pageStyle = computed(
@@ -87,7 +83,7 @@ export default defineComponent({
       lines,
       rows,
       gridTopLinesStyle,
-      checkMyGridRows
+      checkGrid
     };
   }
 });

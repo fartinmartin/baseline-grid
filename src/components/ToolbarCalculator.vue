@@ -31,21 +31,21 @@
       <number-input label="Bottom" v-model="bottom" />
     </panel>
 
-    <panel header="Grid Rows" v-model="checkMyGridRows" optional>
+    <panel header="Grid Rows" v-model="checkGrid" optional>
       <number-input
         label="Gutter"
         v-model="gutter"
         freeze="points"
         :min="leading"
         :step="leading"
-        :disabled="!checkMyGridRows"
+        :disabled="!checkGrid"
       />
       <number-input
         label="Rows"
         v-model="rows"
         freeze="rows"
         :min="2"
-        :disabled="!checkMyGridRows"
+        :disabled="!checkGrid"
       />
     </panel>
   </div>
@@ -80,7 +80,7 @@ export default defineComponent({
       bottom,
       gutter,
       rows,
-      checkMyGridRows
+      checkGrid
     } = useToolbar();
 
     const setOrientation = (event: { target: HTMLInputElement }) => {
@@ -107,7 +107,7 @@ export default defineComponent({
       bottom,
       gutter,
       rows,
-      checkMyGridRows
+      checkGrid
     };
   }
 });
