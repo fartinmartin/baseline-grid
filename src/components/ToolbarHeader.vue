@@ -4,7 +4,10 @@
       Baseline Grid
     </h1>
     <span class="divider">/</span>
-    <span @click="currentPanel = 'ToolbarFixes'" :class="{ active: !isCalc }">
+    <span
+      @click="currentPanel = 'ToolbarFixes'"
+      :class="{ active: !isCalc, disabled: isPassing }"
+    >
       Your Options
     </span>
   </header>
@@ -17,9 +20,9 @@ import useToolbar from "@/composables/useToolbar";
 export default defineComponent({
   name: "ToolbarHeader",
   setup() {
-    const { currentPanel } = useToolbar();
+    const { currentPanel, isPassing } = useToolbar();
     const isCalc = computed(() => currentPanel.value === "ToolbarCalculator");
-    return { currentPanel, isCalc };
+    return { currentPanel, isPassing, isCalc };
   }
 });
 </script>
@@ -51,5 +54,9 @@ span {
 
 .active {
   opacity: 1;
+}
+
+.disabled {
+  pointer-events: none;
 }
 </style>

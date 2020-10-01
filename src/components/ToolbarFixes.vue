@@ -187,6 +187,7 @@ p + p {
 
 .note {
   font-size: 0.875rem;
+  color: var(--gray-40);
 
   span {
     font-style: italic;

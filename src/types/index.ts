@@ -45,4 +45,5 @@ export type PageOption =
   | "cd"
   | "custom";
 
-export type Orientation = "landscape" | "portrait";
+export type OrientationOption = "landscape" | "portrait";
+export type PanelOption = "ToolbarCalculator" | "ToolbarFixes";

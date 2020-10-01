@@ -1,11 +1,24 @@
 import pagePresets from "@/assets/data/page-presets.json";
 import unitPresets from "@/assets/data/unit-presets.json";
-import { Orientation, PageOption, PresetGroup, UnitOption } from "@/types";
+import {
+  OrientationOption,
+  PageOption,
+  PresetGroup,
+  UnitOption
+} from "@/types";
 import { flattenPresetGroup as _fpg } from "@/utils";
 import { computed, reactive, ref, toRefs, watch } from "vue";
 
 const units: PresetGroup[] = unitPresets;
 const pages: PresetGroup[] = pagePresets;
+
+// const global = reactive({
+//   currentPanel: "ToolbarCalculator" as PanelOption,
+//   unit: "picas" as UnitOption, // switch to points eventually
+//   preset: "letter" as PageOption,
+//   orientation: "portrait" as OrientationOption,
+//   checkGrid: false // update this variable name across components
+// });
 
 const currentPanel = ref<"ToolbarCalculator" | "ToolbarFixes">(
   "ToolbarCalculator"
@@ -14,7 +27,7 @@ const currentPanel = ref<"ToolbarCalculator" | "ToolbarFixes">(
 const leading = ref(12);
 const unit = ref<UnitOption>("picas");
 const preset = ref<PageOption>("letter");
-const orientation = ref<Orientation>("portrait");
+const orientation = ref<OrientationOption>("portrait");
 
 const dimensions = reactive({
   width: 51,
@@ -25,6 +38,11 @@ const margins = reactive({
   top: 3,
   bottom: 4
 });
+
+// const grid = reactive({
+//   gutter: 12,
+//   rows: 6,
+// })
 
 const gutter = ref(12);
 const rows = ref(6);
