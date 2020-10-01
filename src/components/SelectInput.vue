@@ -74,15 +74,16 @@ export default defineComponent({
     const { currentPagePreset, currentUnitPreset } = useToolbar();
     // TODO:
     // The selected name should be more elegant.. and not defined in this "genereic" component 🤷‍♂️
-    const selectedName = computed(() =>
-      props.append
-        ? props.freeze
+    const selectedName = computed(() => {
+      if (props.append) {
+        return props.freeze
           ? props.freeze
-          : currentUnitPreset.value.abbreviation
-          ? currentUnitPreset.value.abbreviation
-          : currentUnitPreset.value.name
-        : currentPagePreset.value.name
-    );
+          : currentUnitPreset.value.abbreviation ||
+              currentUnitPreset.value.name;
+      } else {
+        return currentPagePreset.value.name;
+      }
+    });
 
     const onSelected = (option: string) => {
       open.value = false;

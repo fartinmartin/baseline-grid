@@ -12,8 +12,8 @@
     <panel header="Page Size">
       <select-input label="Presets" v-model:selected="preset" :options="pp" />
 
-      <number-input label="Width" v-model="width" optional />
-      <number-input label="Height" v-model="height" />
+      <number-input :step="step" label="Width" v-model="width" optional />
+      <number-input :step="step" label="Height" v-model="height" />
 
       <radio-input
         label="Orientation"
@@ -75,6 +75,7 @@ export default defineComponent({
       height,
       orientation,
       unit,
+      currentStep: step,
       preset,
       top,
       bottom,
@@ -101,6 +102,7 @@ export default defineComponent({
       height,
       orientation,
       unit,
+      step,
       preset,
       setOrientation,
       top,

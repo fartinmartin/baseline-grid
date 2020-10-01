@@ -98,9 +98,8 @@ export default defineComponent({
     margin-top: 0;
   }
 }
-</style>
 
-<style lang="scss" scoped>
+// for optional checkbox
 input ~ h3 {
   color: var(--gray-30);
 }

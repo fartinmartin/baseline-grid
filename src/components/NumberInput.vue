@@ -99,12 +99,12 @@ export default defineComponent({
   setup(props, { emit }) {
     const { unit } = useToolbar();
     const inputRef = (ref(null) as unknown) as { value: HTMLInputElement };
-    const canIncrease = computed(() => props.modelValue < props.max);
-    const canDecrease = computed(() => props.modelValue > props.min);
+
     const name = computed(() => props.modelValue.toString().toLowerCase());
     const active = ref(false);
 
-    const change = (event: InputEvent) => emit("change", event);
+    const canIncrease = computed(() => props.modelValue < props.max);
+    const canDecrease = computed(() => props.modelValue > props.min);
 
     const decrease = (event: KeyboardEvent) => {
       if (!canDecrease.value) return;
@@ -131,13 +131,14 @@ export default defineComponent({
       emit("update:modelValue", newValue);
     };
 
+    // TODO:
     // if input:invalid deal with red styles
+    // call function on input @invalid event
 
     return {
       inputRef,
       canIncrease,
       canDecrease,
-      change,
       increase,
       decrease,
       unit,

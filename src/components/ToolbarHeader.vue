@@ -33,8 +33,6 @@ export default defineComponent({
   padding: 2rem;
   overflow-x: hidden;
   border-bottom: 1px solid var(--gray-10);
-  /* box-shadow: 0px calc(var(--toolbar-fade) * 1px)
-    calc(var(--toolbar-fade) * 1px) var(--gray-00); */
   z-index: 100;
   display: flex;
 }

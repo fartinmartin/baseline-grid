@@ -46,7 +46,7 @@ export default defineComponent({
       widthPt,
       heightPt,
       topPt,
-      bottomPt,
+      botPt,
       lines,
       leading,
       rowSize,
@@ -60,7 +60,7 @@ export default defineComponent({
     );
 
     const marginStyle = computed(
-      () => `top: ${topPt.value}px; bottom: ${bottomPt.value}px`
+      () => `top: ${topPt.value}px; bottom: ${botPt.value}px`
     );
 
     const lineStyle = computed(() => `margin-top: ${leading.value - 1}px`);
@@ -163,7 +163,6 @@ export default defineComponent({
   width: 100%;
   border-bottom: 1px solid red;
   z-index: 100;
-  /* box-sizing: content-box; */
 
   &:first-of-type {
     margin-top: 0 !important;

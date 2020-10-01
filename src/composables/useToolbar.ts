@@ -4,14 +4,13 @@ import {
   OrientationOption,
   PageOption,
   PanelOption,
-  PresetGroup,
   UnitOption
 } from "@/types";
 import { flattenPresetGroup as _fpg } from "@/utils";
 import { computed, reactive, toRefs, watch } from "vue";
 
-const units: PresetGroup[] = unitPresets;
-const pages: PresetGroup[] = pagePresets;
+const units = _fpg(unitPresets); // unitPresets: PresetGroup[]
+const pages = _fpg(pagePresets); // pagePresets: PresetGroup[]
 
 const global = reactive({
   currentPanel: "ToolbarCalculator" as PanelOption,
@@ -19,7 +18,7 @@ const global = reactive({
   unit: "points" as UnitOption,
   preset: "letter" as PageOption,
   orientation: "portrait" as OrientationOption,
-  checkGrid: false // update this variable name across components
+  checkGrid: false
 });
 
 const dimensions = reactive({
@@ -38,33 +37,28 @@ const grid = reactive({
 });
 
 export default function useTest() {
-  const factor = computed(
-    () => _fpg(units).filter(i => i.id === global.unit)[0].factor
-  );
-
   const currentUnitPreset = computed(
-    () => _fpg(units).filter(i => i.id === global.unit)[0]
+    () => units.filter(i => i.id === global.unit)[0]
   );
 
   const currentPagePreset = computed(
-    () => _fpg(pages).filter(i => i.id === global.preset)[0]
+    () => pages.filter(i => i.id === global.preset)[0]
   );
 
-  const step = computed(
-    () => _fpg(units).filter(i => i.id === global.unit)[0].step
-  );
+  const factor = computed(() => currentUnitPreset.value.factor);
+  const currentStep = computed(() => currentUnitPreset.value.step);
 
   const widthPt = computed(() => dimensions.width / factor.value);
   const heightPt = computed(() => dimensions.height / factor.value);
 
   const topPt = computed(() => margins.top / factor.value);
-  const bottomPt = computed(() => margins.bottom / factor.value);
+  const botPt = computed(() => margins.bottom / factor.value);
 
-  const area = computed(() => heightPt.value - topPt.value - bottomPt.value);
-  const lines = computed(() => area.value / global.leading);
+  const safeArea = computed(() => heightPt.value - topPt.value - botPt.value);
+  const lines = computed(() => safeArea.value / global.leading);
 
   const rowSize = computed(
-    () => (area.value - grid.gutter * (grid.rows - 1)) / grid.rows
+    () => (safeArea.value - grid.gutter * (grid.rows - 1)) / grid.rows
   );
 
   const baselineIsPassing = computed(() => Number.isInteger(lines.value));
@@ -81,7 +75,7 @@ export default function useTest() {
 
   // when new unit is selected update measurements to new unit (but keep their absolute values)
   watch(
-    [() => global.unit, widthPt, heightPt, topPt, bottomPt],
+    [() => global.unit, widthPt, heightPt, topPt, botPt],
     ([unit], [prevUnit, pW, pH, pT, pB]) => {
       if (unit !== prevUnit) {
         dimensions.width = +pW * factor.value;
@@ -110,10 +104,10 @@ export default function useTest() {
 
   // if dimensions match a preset, update preset
   watch([widthPt, heightPt], ([width, height]) => {
-    const directMatch = _fpg(pages).find(
+    const directMatch = pages.find(
       i => i.dimensions.height === height && i.dimensions.width === width
     );
-    const invertMatch = _fpg(pages).find(
+    const invertMatch = pages.find(
       i => i.dimensions.height === width && i.dimensions.width === height
     );
 
@@ -145,10 +139,10 @@ export default function useTest() {
     widthPt,
     heightPt,
     topPt,
-    bottomPt,
+    botPt,
     lines,
-    area,
-    step,
+    safeArea,
+    currentStep,
     currentPagePreset,
     currentUnitPreset,
     rowSize,
