@@ -1,13 +1,13 @@
 <template>
   <div class="page-wrap">
-    <div id="page" :style="pageStyle">
-      <div id="margin" :style="marginStyle">
+    <div id="page" :style="style.page">
+      <div id="margin" :style="style.margin">
         <div id="baseline-grid">
           <div
             v-for="(line, index) in linesRoundedUp"
             :key="index"
             class="line"
-            :style="lineStyle"
+            :style="style.line"
           />
         </div>
         <div id="grid-bottom-lines" v-if="checkGrid">
@@ -15,15 +15,15 @@
             v-for="(row, index) in rows"
             :key="index"
             class="guide"
-            :style="guideStyle"
+            :style="style.guide"
           />
         </div>
-        <div id="grid-top-lines" :style="gridTopLinesStyle" v-if="checkGrid">
+        <div id="grid-top-lines" :style="style.grid" v-if="checkGrid">
           <div
             v-for="(row, index) in rows"
             :key="index"
             class="guide"
-            :style="guideStyle"
+            :style="style.guide"
           />
         </div>
       </div>
@@ -55,34 +55,30 @@ export default defineComponent({
       checkGrid
     } = useToolbar();
 
-    const pageStyle = computed(
-      () => `width: ${widthPt.value}px; height: ${heightPt.value}px;`
-    );
+    const style = computed(() => ({
+      page: `width: ${widthPt.value}px; height: ${heightPt.value}px;`,
+      margin: `top: ${topPt.value}px; bottom: ${botPt.value}px`,
+      line: `margin-top: ${leading.value - 1}px`,
+      guide: `height: ${rowSize.value}px; margin-top: ${gutter.value}px`,
+      grid: `margin-top: ${gutter.value - 1}px`
+    }));
 
-    const marginStyle = computed(
-      () => `top: ${topPt.value}px; bottom: ${botPt.value}px`
-    );
+    const previewStyle = computed(() => ({
+      page: `width: ${widthPt.value}px; height: ${heightPt.value}px;`,
+      margin: `top: ${topPt.value}px; bottom: ${botPt.value}px`,
+      line: `margin-top: ${leading.value - 1}px`,
+      guide: `height: ${rowSize.value}px; margin-top: ${gutter.value}px`,
+      grid: `margin-top: ${gutter.value - 1}px`
+    }));
 
-    const lineStyle = computed(() => `margin-top: ${leading.value - 1}px`);
     const linesRoundedUp = computed(() => Math.ceil(lines.value));
 
-    const guideStyle = computed(
-      () => `height: ${rowSize.value}px; margin-top: ${gutter.value}px`
-    );
-    const gridTopLinesStyle = computed(
-      () => `margin-top: ${gutter.value - 1}px`
-    );
-
     return {
-      pageStyle,
-      marginStyle,
-      lineStyle,
-      guideStyle,
+      style,
       linesRoundedUp,
       leading,
       lines,
       rows,
-      gridTopLinesStyle,
       checkGrid
     };
   }

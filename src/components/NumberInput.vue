@@ -160,8 +160,8 @@ export default defineComponent({
   border: 2px solid var(--gray-10);
 
   &.active {
-    border: 2px solid var(--active-color);
-    box-shadow: 0 0 4px 4px var(--active-color-light);
+    border: 2px solid var(--blue-base);
+    box-shadow: 0 0 4px 4px var(--blue-light);
   }
 
   > .input-group {

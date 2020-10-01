@@ -16,9 +16,15 @@
           <h4 class="label">You could...</h4>
           <p>
             Adjust your <span class="property">margins</span> by a total of
-            <span class="value">+{{ newMarginHeight.high - safeArea }}</span>
+            <value-preview
+              property="bottom"
+              :value="newMarginHeight.high - safeArea"
+            />
             or
-            <span class="value">{{ newMarginHeight.low - safeArea }}</span>
+            <value-preview
+              property="bottom"
+              :value="newMarginHeight.low - safeArea"
+            />
             points.
           </p>
           <p class="note">
@@ -33,8 +39,9 @@
           </h4>
           <p>
             Adjust your <span class="property">leading</span> to
-            <span class="value">{{ newLeading.high }}</span> or
-            <span class="value">{{ newLeading.low }}</span> points.
+            <value-preview property="leading" :value="newLeading.high" />
+            or
+            <value-preview property="leading" :value="newLeading.low" /> points.
           </p>
           <p class="note">
             <span>Note: </span>This is the less likely option as you may have
@@ -43,7 +50,12 @@
         </div>
       </div>
       <div v-else>
-        <p>You're all set here!</p>
+        <p>
+          <span class="check">
+            <img src="@/assets/images/check.svg" alt="" />
+          </span>
+          You're all set here!
+        </p>
       </div>
     </panel>
     <panel header="Grid Rows" :disabled="!checkGrid">
@@ -53,8 +65,15 @@
             <h4 class="label">You could...</h4>
             <p>
               Adjust your <span class="property">margins</span> by a total of
-              <span class="value">+{{ newSafeArea.high - safeArea }}</span> or
-              <span class="value">{{ newSafeArea.low - safeArea }}</span>
+              <value-preview
+                property="bottom"
+                :value="newSafeArea.high - safeArea"
+              />
+              or
+              <value-preview
+                property="bottom"
+                :value="newSafeArea.low - safeArea"
+              />
               points.
             </p>
             <p class="note">
@@ -81,7 +100,12 @@
           </div>
         </div>
         <div v-else>
-          <p>You're all set here!</p>
+          <p>
+            <span class="check">
+              <img src="@/assets/images/check.svg" alt="" />
+            </span>
+            You're all set here!
+          </p>
         </div>
       </div>
       <div v-else>
@@ -97,12 +121,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Panel from "./Panel.vue";
+import ValuePreview from "./ValuePreview.vue";
 import useToolbar from "@/composables/useToolbar";
 import { factors, closest, multiples } from "@/utils";
 
 export default defineComponent({
   name: "ToolbarFixes",
-  components: { Panel },
+  components: { Panel, ValuePreview },
   setup() {
     const {
       currentPanel,
@@ -184,6 +209,26 @@ p + p {
 
   span {
     font-style: italic;
+    display: none;
+  }
+}
+
+.check {
+  display: inline-block;
+  padding: 0.125rem;
+
+  border-radius: 50%;
+  background: var(--green-light);
+  border: 2px solid var(--green-base);
+
+  position: relative;
+  top: 5.5px;
+  margin-right: 0.25rem;
+
+  img {
+    max-width: 100%;
+    width: 1rem;
+    height: 1rem;
   }
 }
 </style>

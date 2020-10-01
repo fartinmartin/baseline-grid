@@ -66,19 +66,19 @@ export default defineComponent({
 }
 
 .message.good-news {
-  --bg-color: hsl(120, 53%, 85%);
-  --border-color: hsl(120, 53%, 45%);
+  --bg-color: var(--green-light);
+  --border-color: var(--green-base);
   pointer-events: none;
 }
 
 .message.bad-news {
-  --bg-color: hsl(9, 100%, 86%);
-  --border-color: hsl(9, 100%, 64%);
+  --bg-color: var(--red-light);
+  --border-color: var(--red-base);
 }
 
 .message.okay-news {
-  --bg-color: hsl(36, 100%, 86%);
-  --border-color: hsl(36, 100%, 64%);
+  --bg-color: var(--yellow-light);
+  --border-color: var(--yellow-base);
 }
 
 button.message {

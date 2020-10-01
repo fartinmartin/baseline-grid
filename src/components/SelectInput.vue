@@ -105,8 +105,8 @@ export default defineComponent({
     outline: none;
 
     > .selected {
-      border: 2px solid var(--active-color);
-      box-shadow: 0 0 4px 4px var(--active-color-light);
+      border: 2px solid var(--blue-base);
+      box-shadow: 0 0 4px 4px var(--blue-light);
     }
   }
 
@@ -189,8 +189,8 @@ export default defineComponent({
   }
 
   &.open {
-    border: 2px solid var(--active-color);
-    box-shadow: 0 0 4px 4px var(--active-color-light);
+    border: 2px solid var(--blue-base);
+    box-shadow: 0 0 4px 4px var(--blue-light);
 
     .arrow {
       transform: rotate(180deg);
@@ -211,7 +211,7 @@ export default defineComponent({
   /* border-radius: 0px 0px var(--border-radius) var(--border-radius); */
   border-radius: var(--border-radius);
   border: 2px solid var(--gray-00);
-  box-shadow: 0 0 4px 4px var(--active-color-light);
+  box-shadow: 0 0 4px 4px var(--blue-light);
 
   .option-group {
     border-top: 1px dotted var(--gray-10);

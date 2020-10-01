@@ -18,7 +18,8 @@ const global = reactive({
   unit: "points" as UnitOption,
   preset: "letter" as PageOption,
   orientation: "portrait" as OrientationOption,
-  checkGrid: false
+  checkGrid: false,
+  isPreviewing: false
 });
 
 const dimensions = reactive({
@@ -36,6 +37,14 @@ const grid = reactive({
   rows: 6
 });
 
+const preview = reactive({
+  previewLeading: 12,
+  previewTop: 36,
+  previewBottom: 48,
+  previewGutter: 12,
+  previewRows: 6
+});
+
 export default function useTest() {
   const currentUnitPreset = computed(
     () => units.filter(i => i.id === global.unit)[0]
@@ -46,7 +55,15 @@ export default function useTest() {
   );
 
   const factor = computed(() => currentUnitPreset.value.factor);
-  const currentStep = computed(() => currentUnitPreset.value.step);
+  const step = computed(() => currentUnitPreset.value.step);
+
+  // these values should be for the UI not logic
+  // const uiUnits = computed(() => ({
+  //   width: dimensions.width * factor.value,
+  //   height: dimensions.height * factor.value,
+  //   top: margins.top * factor.value,
+  //   bottom: margins.bottom * factor.value
+  // }));
 
   const widthPt = computed(() => dimensions.width / factor.value);
   const heightPt = computed(() => dimensions.height / factor.value);
@@ -136,18 +153,20 @@ export default function useTest() {
     ...toRefs(dimensions),
     ...toRefs(margins),
     ...toRefs(grid),
+    ...toRefs(preview),
     widthPt,
     heightPt,
     topPt,
     botPt,
     lines,
     safeArea,
-    currentStep,
+    step,
     currentPagePreset,
     currentUnitPreset,
     rowSize,
     baselineIsPassing,
     gridIsPassing,
-    isPassing
+    isPassing,
+    factor
   };
 }

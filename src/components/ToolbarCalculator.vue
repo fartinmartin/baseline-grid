@@ -75,7 +75,7 @@ export default defineComponent({
       height,
       orientation,
       unit,
-      currentStep: step,
+      step,
       preset,
       top,
       bottom,
