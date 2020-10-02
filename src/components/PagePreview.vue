@@ -1,13 +1,18 @@
 <template>
   <div class="page-wrap">
-    <div id="page" :style="style.page">
-      <div id="margin" :style="style.margin">
+    <div id="page" :style="isPreviewing ? previewStyle.page : style.page">
+      <div
+        id="margin"
+        :style="isPreviewing ? previewStyle.margin : style.margin"
+      >
         <div id="baseline-grid">
           <div
-            v-for="(line, index) in linesRoundedUp"
+            v-for="(line, index) in isPreviewing
+              ? previewLinesRoundedUp
+              : linesRoundedUp"
             :key="index"
             class="line"
-            :style="style.line"
+            :style="isPreviewing ? previewStyle.line : style.line"
           />
         </div>
         <div id="grid-bottom-lines" v-if="checkGrid">
@@ -15,15 +20,19 @@
             v-for="(row, index) in rows"
             :key="index"
             class="guide"
-            :style="style.guide"
+            :style="isPreviewing ? previewStyle.guide : style.guide"
           />
         </div>
-        <div id="grid-top-lines" :style="style.grid" v-if="checkGrid">
+        <div
+          id="grid-top-lines"
+          :style="isPreviewing ? previewStyle.grid : style.grid"
+          v-if="checkGrid"
+        >
           <div
             v-for="(row, index) in rows"
             :key="index"
             class="guide"
-            :style="style.guide"
+            :style="isPreviewing ? previewStyle.guide : style.guide"
           />
         </div>
       </div>
@@ -52,7 +61,9 @@ export default defineComponent({
       rowSize,
       gutter,
       rows,
-      checkGrid
+      checkGrid,
+      isPreviewing,
+      preview
     } = useToolbar();
 
     const style = computed(() => ({
@@ -65,13 +76,18 @@ export default defineComponent({
 
     const previewStyle = computed(() => ({
       page: `width: ${widthPt.value}px; height: ${heightPt.value}px;`,
-      margin: `top: ${topPt.value}px; bottom: ${botPt.value}px`,
-      line: `margin-top: ${leading.value - 1}px`,
-      guide: `height: ${rowSize.value}px; margin-top: ${gutter.value}px`,
-      grid: `margin-top: ${gutter.value - 1}px`
+      margin: `top: ${preview.top}px; bottom: ${preview.bottom}px`,
+      line: `margin-top: ${preview.leading - 1}px`,
+      guide: `height: ${preview.rowSize}px; margin-top: ${preview.gutter}px`,
+      grid: `margin-top: ${preview.gutter - 1}px`
     }));
 
     const linesRoundedUp = computed(() => Math.ceil(lines.value));
+    const previewLinesRoundedUp = computed(() =>
+      Math.ceil(
+        (heightPt.value - preview.top - preview.bottom) / preview.leading
+      )
+    );
 
     return {
       style,
@@ -79,7 +95,10 @@ export default defineComponent({
       leading,
       lines,
       rows,
-      checkGrid
+      checkGrid,
+      isPreviewing,
+      previewStyle,
+      previewLinesRoundedUp
     };
   }
 });

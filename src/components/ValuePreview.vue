@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent } from "vue";
 import useToolbar from "@/composables/useToolbar";
 
 type Property = "top" | "bottom" | "leading" | "gutter" | "rows";
@@ -23,34 +23,85 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const plus = computed(() => (Math.sign(props.value) === 1 ? `+` : null));
-    const { top, bottom, leading, gutter, rows, factor } = useToolbar();
+    const plus = computed(() =>
+      Math.sign(props.value) === 1 && props.property !== "leading" ? `+` : null
+    );
+    const {
+      heightPt,
+      top,
+      bottom,
+      leading,
+      gutter,
+      rows,
+      rowSize,
+      factor,
+      isPreviewing,
+      preview
+    } = useToolbar();
+
     const cache = {
       value: props.value,
       mt: top.value,
       mb: bottom.value,
       leading: leading.value,
       gutter: gutter.value,
-      rows: rows.value
+      rows: rows.value,
+      rowSize: rowSize.value
+    };
+
+    const reset = () => {
+      preview.top = cache.mt;
+      preview.bottom = cache.mb;
+      preview.leading = cache.leading;
+      preview.gutter = cache.gutter;
+      preview.rows = cache.rows;
+      preview.rowSize = cache.rowSize;
     };
 
     const mouseOver = () => {
       // could this be animated?
+      isPreviewing.value = true;
+      reset();
+
       switch (props.property) {
         case "top":
-          top.value = top.value + props.value * factor.value;
+          preview.top = top.value - props.value * factor.value;
+          preview.rowSize =
+            (heightPt.value -
+              cache.mt -
+              preview.bottom -
+              gutter.value * (rows.value - 1)) /
+            rows.value;
           break;
         case "bottom":
-          bottom.value = bottom.value + props.value * factor.value;
+          preview.bottom = bottom.value - props.value * factor.value;
+          preview.rowSize =
+            (heightPt.value -
+              cache.mt -
+              preview.bottom -
+              gutter.value * (rows.value - 1)) /
+            rows.value;
           break;
         case "leading":
-          leading.value = props.value;
+          preview.leading = props.value;
           break;
         case "gutter":
-          gutter.value = props.value;
+          preview.gutter = props.value;
+          preview.rowSize =
+            (heightPt.value -
+              cache.mt -
+              preview.bottom -
+              preview.gutter * (preview.rows - 1)) /
+            preview.rows;
           break;
         case "rows":
-          rows.value = props.value;
+          preview.rows = props.value;
+          preview.rowSize =
+            (heightPt.value -
+              cache.mt -
+              preview.bottom -
+              preview.gutter * (preview.rows - 1)) /
+            preview.rows;
           break;
         default:
           break;
@@ -58,26 +109,8 @@ export default defineComponent({
     };
 
     const mouseLeave = () => {
-      // could this be animated?
-      switch (props.property) {
-        case "top":
-          top.value = cache.mt;
-          break;
-        case "bottom":
-          bottom.value = cache.mb;
-          break;
-        case "leading":
-          leading.value = cache.leading;
-          break;
-        case "gutter":
-          gutter.value = cache.gutter;
-          break;
-        case "rows":
-          rows.value = cache.rows;
-          break;
-        default:
-          break;
-      }
+      isPreviewing.value = false;
+      reset();
     };
 
     return { mouseOver, mouseLeave, plus, cache };
@@ -92,5 +125,13 @@ export default defineComponent({
   font-family: monospace;
   padding: 0 0.5em;
   border-radius: var(--border-radius);
+  border: 2px solid transparent;
+  font-size: 0.875rem;
+}
+
+.value:hover {
+  color: var(--blue-base);
+  border-color: var(--blue-base);
+  background: var(--blue-light);
 }
 </style>

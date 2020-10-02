@@ -5,7 +5,6 @@
         Here are a couple things you may want to try...
       </p>
       <p class="note">
-        <span>Note: </span>
         Keep in mind I am a robot—use your human judgement to choose the best
         option!
       </p>
@@ -13,9 +12,11 @@
     <panel header="Baseline Grid" :disabled="!isPassing">
       <div v-if="!baselineIsPassing">
         <div class="option">
-          <h4 class="label">You could...</h4>
+          <h4 class="label">Keep your leading and...</h4>
           <p>
             Adjust your <span class="property">margins</span> by a total of
+            <value-preview property="bottom" :value="marginRemainder" />
+            or
             <value-preview
               property="bottom"
               :value="newMarginHeight.high - safeArea"
@@ -27,25 +28,20 @@
             />
             points.
           </p>
-          <p class="note">
-            <span>Note: </span>This could mean adjusting either your top or
-            bottom margin by either value OR dividing that value amongst the top
-            and bottom margins.
-          </p>
+        </div>
+        <div class="option-divider">
+          <span>or</span>
+          <div class="rule" />
         </div>
         <div class="option">
           <h4 class="label">
-            Another option is to...
+            Keep your margins and...
           </h4>
           <p>
             Adjust your <span class="property">leading</span> to
             <value-preview property="leading" :value="newLeading.high" />
             or
             <value-preview property="leading" :value="newLeading.low" /> points.
-          </p>
-          <p class="note">
-            <span>Note: </span>This is the less likely option as you may have
-            already settled on a size and leading for your body copy.
           </p>
         </div>
       </div>
@@ -62,7 +58,7 @@
       <div v-if="checkGrid">
         <div v-if="!gridIsPassing">
           <div class="option">
-            <h4 class="label">You could...</h4>
+            <h4 class="label">Keep your grid and...</h4>
             <p>
               Adjust your <span class="property">margins</span> by a total of
               <value-preview
@@ -76,15 +72,14 @@
               />
               points.
             </p>
-            <p class="note">
-              <span>Note: </span>This could mean adjusting either your top or
-              bottom margin by either value OR dividing that value amongst the
-              top and bottom margins.
-            </p>
+          </div>
+          <div class="option-divider">
+            <span>or</span>
+            <div class="rule" />
           </div>
           <div class="option">
             <h4 class="label">
-              Another option is to...
+              Keep your margins and...
             </h4>
             <p>
               Adjust your <span class="property">gutter</span> to
@@ -92,10 +87,6 @@
               <span class="value">TBD</span> points and your
               <span class="property">row count</span> to
               <span class="value">TBD</span> or <span class="value">TBD</span>.
-            </p>
-            <p class="note">
-              <span>Note: </span>This clearly doesn't work yet and will take a
-              big brain to figure it out.
             </p>
           </div>
         </div>
@@ -119,11 +110,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import Panel from "./Panel.vue";
 import ValuePreview from "./ValuePreview.vue";
 import useToolbar from "@/composables/useToolbar";
 import { factors, closest, multiples } from "@/utils";
+
+// TODOs:
+// 1. figure out how to suggest gutter and row options
+// 2. implement array based options (see comment block below)
+// 3. update grid styles
+// 4. adapt unit to current selected unit
+// 5. animate page preview changes?
 
 export default defineComponent({
   name: "ToolbarFixes",
@@ -140,13 +138,47 @@ export default defineComponent({
       rowSize,
       gutter,
       rows,
-      safeArea
+      safeArea,
+      lines,
+      preview
     } = useToolbar();
+
+    // there should be an array of numbers for each option
+    // then you could loop over them in the template
+    // there should also be a validate (function?) that checks
+    // if the MARGIN value that is about to be pushed creates a
+    // scenario that exceeds the page dimensions
+    const baselineOptions: { margins: number[]; leading: number[] } = {
+      margins: [],
+      leading: []
+    };
+
+    const m = Object.values(
+      closest(multiples(leading.value, heightPt.value), safeArea.value)
+    );
+    const l = Object.values(closest(factors(safeArea.value), leading.value));
+
+    baselineOptions.margins = [...baselineOptions.margins, ...m];
+    baselineOptions.leading = [...baselineOptions.leading, ...l];
+
+    // console.log(baselineOptions);
+
+    const gridOptions: { margins: number[]; grid: object[] } = {
+      margins: [],
+      grid: []
+    };
+
+    baselineOptions.margins.push(1);
+    gridOptions.grid.push({ gutter: 12, row: 6 });
 
     const newLeading = closest(factors(safeArea.value), leading.value);
     const newMarginHeight = closest(
       multiples(leading.value, heightPt.value),
       safeArea.value
+    );
+
+    const marginRemainder = computed(
+      () => safeArea.value - leading.value * Math.ceil(lines.value)
     );
 
     const newRowSize = closest(
@@ -172,7 +204,9 @@ export default defineComponent({
       baselineIsPassing,
       gridIsPassing,
       newSafeArea,
-      safeArea
+      safeArea,
+      marginRemainder,
+      preview
     };
   }
 });
@@ -184,7 +218,7 @@ export default defineComponent({
 }
 
 .option:not(:first-of-type) {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .property {
@@ -206,10 +240,32 @@ p + p {
 .note {
   font-size: 0.875rem;
   color: var(--gray-40);
+}
+
+.option-divider {
+  margin-top: 1rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   span {
+    /* text-transform: uppercase; */
     font-style: italic;
-    display: none;
+    background: var(--gray-00);
+    color: var(--gray-30);
+    padding: 0 0.5rem;
+    position: relative;
+    z-index: 100;
+  }
+
+  .rule {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    width: 100%;
+    border-top: 1px dotted var(--gray-30);
   }
 }
 
@@ -222,13 +278,13 @@ p + p {
   border: 2px solid var(--green-base);
 
   position: relative;
-  top: 5.5px;
+  top: 5px;
   margin-right: 0.25rem;
 
   img {
     max-width: 100%;
-    width: 1rem;
-    height: 1rem;
+    width: 0.875rem;
+    height: 0.875rem;
   }
 }
 </style>

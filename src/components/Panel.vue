@@ -5,7 +5,11 @@
         <input
           type="checkbox"
           v-if="optional"
-          @change="$emit('update:modelValue', $event.target.checked)"
+          :checked="checked"
+          @change="
+            checked = !checked;
+            $emit('update:modelValue', $event.target.checked);
+          "
         />
         <h3 v-if="header">{{ header }}</h3>
       </div>
@@ -27,14 +31,16 @@ export default defineComponent({
     optional: Boolean,
     modelValue: Boolean
   },
-  setup() {
+  setup(props) {
+    const checked = ref(props.modelValue);
     const open = ref(true);
+
     const handleOpen = (event: { target: HTMLElement }) => {
       if (event.target.tagName === "INPUT") return;
       open.value = !open.value;
     };
 
-    return { open, handleOpen };
+    return { checked, open, handleOpen };
   }
 });
 </script>
