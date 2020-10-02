@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, ref, toRefs } from "vue";
 import unitPresets from "@/assets/data/unit-presets.json";
 import SelectInput from "./SelectInput.vue";
 import useToolbar from "@/composables/useToolbar";
@@ -97,7 +97,8 @@ export default defineComponent({
     optional: { type: Boolean }
   },
   setup(props, { emit }) {
-    const { unit } = useToolbar();
+    const { global } = useToolbar();
+    const { unit } = toRefs(global);
     const inputRef = (ref(null) as unknown) as { value: HTMLInputElement };
 
     const name = computed(() => props.modelValue.toString().toLowerCase());

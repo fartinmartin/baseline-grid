@@ -10,7 +10,7 @@
       </p>
     </div>
     <panel header="Baseline Grid" :disabled="!isPassing">
-      <div v-if="!baselineIsPassing">
+      <div v-if="!baseline">
         <div class="option">
           <h4 class="label">Keep your leading and...</h4>
           <p>
@@ -19,12 +19,12 @@
             or
             <value-preview
               property="bottom"
-              :value="newMarginHeight.high - safeArea"
+              :value="newMarginHeight.high - safe"
             />
             or
             <value-preview
               property="bottom"
-              :value="newMarginHeight.low - safeArea"
+              :value="newMarginHeight.low - safe"
             />
             points.
           </p>
@@ -56,20 +56,14 @@
     </panel>
     <panel header="Grid Rows" :disabled="!checkGrid">
       <div v-if="checkGrid">
-        <div v-if="!gridIsPassing">
+        <div v-if="!grid">
           <div class="option">
             <h4 class="label">Keep your grid and...</h4>
             <p>
               Adjust your <span class="property">margins</span> by a total of
-              <value-preview
-                property="bottom"
-                :value="newSafeArea.high - safeArea"
-              />
+              <value-preview property="bottom" :value="newSafe.high - safe" />
               or
-              <value-preview
-                property="bottom"
-                :value="newSafeArea.low - safeArea"
-              />
+              <value-preview property="bottom" :value="newSafe.low - safe" />
               points.
             </p>
           </div>
@@ -110,7 +104,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, toRefs } from "vue";
 import Panel from "./Panel.vue";
 import ValuePreview from "./ValuePreview.vue";
 import useToolbar from "@/composables/useToolbar";
@@ -128,20 +122,16 @@ export default defineComponent({
   components: { Panel, ValuePreview },
   setup() {
     const {
-      currentPanel,
-      isPassing,
-      checkGrid,
-      heightPt,
-      leading,
-      baselineIsPassing,
-      gridIsPassing,
-      rowSize,
-      gutter,
-      rows,
-      safeArea,
-      lines,
-      preview
+      global,
+      dimensions,
+      margins,
+      grid,
+      preview,
+      isPassing
     } = useToolbar();
+
+    const { checkGrid } = toRefs(global);
+    const { safe } = toRefs(margins);
 
     // there should be an array of numbers for each option
     // then you could loop over them in the template
@@ -154,9 +144,9 @@ export default defineComponent({
     };
 
     const m = Object.values(
-      closest(multiples(leading.value, heightPt.value), safeArea.value)
+      closest(multiples(global.leading, dimensions.heightPt), margins.safe)
     );
-    const l = Object.values(closest(factors(safeArea.value), leading.value));
+    const l = Object.values(closest(factors(margins.safe), global.leading));
 
     baselineOptions.margins = [...baselineOptions.margins, ...m];
     baselineOptions.leading = [...baselineOptions.leading, ...l];
@@ -171,40 +161,38 @@ export default defineComponent({
     baselineOptions.margins.push(1);
     gridOptions.grid.push({ gutter: 12, row: 6 });
 
-    const newLeading = closest(factors(safeArea.value), leading.value);
+    const newLeading = closest(factors(margins.safe), global.leading);
     const newMarginHeight = closest(
-      multiples(leading.value, heightPt.value),
-      safeArea.value
+      multiples(global.leading, dimensions.heightPt),
+      margins.safe
     );
 
     const marginRemainder = computed(
-      () => safeArea.value - leading.value * Math.ceil(lines.value)
+      () => margins.safe - global.leading * Math.ceil(margins.lines)
     );
 
     const newRowSize = closest(
-      multiples(leading.value, heightPt.value),
-      rowSize.value
+      multiples(global.leading, dimensions.heightPt),
+      grid.rowSize
     );
 
-    const newSafeArea = {
-      high: rows.value * newRowSize.high + (rows.value - 1) * gutter.value,
-      low: rows.value * newRowSize.low + (rows.value - 1) * gutter.value
+    const newSafe = {
+      high: grid.rows * newRowSize.high + (grid.rows - 1) * grid.gutter,
+      low: grid.rows * newRowSize.low + (grid.rows - 1) * grid.gutter
     };
 
     // const newGutterCount = 36;
     // const newRowCount = 3;
 
     return {
-      currentPanel,
       isPassing,
       checkGrid,
       newLeading,
       newMarginHeight,
       newRowSize,
-      baselineIsPassing,
-      gridIsPassing,
-      newSafeArea,
-      safeArea,
+      ...toRefs(isPassing),
+      newSafe,
+      safe,
       marginRemainder,
       preview
     };

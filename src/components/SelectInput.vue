@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, ref, toRefs } from "vue";
 import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
@@ -71,17 +71,17 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const open = ref(false);
-    const { currentPagePreset, currentUnitPreset } = useToolbar();
+    const { current } = useToolbar();
+    const { unit, page } = toRefs(current);
     // TODO:
     // The selected name should be more elegant.. and not defined in this "genereic" component 🤷‍♂️
     const selectedName = computed(() => {
       if (props.append) {
         return props.freeze
           ? props.freeze
-          : currentUnitPreset.value.abbreviation ||
-              currentUnitPreset.value.name;
+          : unit.value.abbreviation || unit.value.name;
       } else {
-        return currentPagePreset.value.name;
+        return page.value.name;
       }
     });
 

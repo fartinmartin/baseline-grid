@@ -45,58 +45,45 @@
 // Allow users to click and drag to scroll when there is overflow.
 // See: https://htmldom.dev/drag-to-scroll/
 
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, toRefs } from "vue";
 import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
   name: "PagePreview",
   setup() {
-    const {
-      widthPt,
-      heightPt,
-      topPt,
-      botPt,
-      lines,
-      leading,
-      rowSize,
-      gutter,
-      rows,
-      checkGrid,
-      isPreviewing,
-      preview
-    } = useToolbar();
+    const { global, dimensions, margins, grid, preview } = useToolbar();
 
     const style = computed(() => ({
-      page: `width: ${widthPt.value}px; height: ${heightPt.value}px;`,
-      margin: `top: ${topPt.value}px; bottom: ${botPt.value}px`,
-      line: `margin-top: ${leading.value - 1}px`,
-      guide: `height: ${rowSize.value}px; margin-top: ${gutter.value}px`,
-      grid: `margin-top: ${gutter.value - 1}px`
+      page: `width: ${dimensions.widthPt}px; height: ${dimensions.heightPt}px;`,
+      margin: `top: ${margins.topPt}px; bottom: ${margins.bottomPt}px`,
+      line: `margin-top: ${global.leading - 1}px`,
+      guide: `height: ${grid.rowSize}px; margin-top: ${grid.gutter}px`,
+      grid: `margin-top: ${grid.gutter - 1}px`
     }));
 
     const previewStyle = computed(() => ({
-      page: `width: ${widthPt.value}px; height: ${heightPt.value}px;`,
+      page: `width: ${dimensions.widthPt}px; height: ${dimensions.heightPt}px;`,
       margin: `top: ${preview.top}px; bottom: ${preview.bottom}px`,
       line: `margin-top: ${preview.leading - 1}px`,
       guide: `height: ${preview.rowSize}px; margin-top: ${preview.gutter}px`,
       grid: `margin-top: ${preview.gutter - 1}px`
     }));
 
-    const linesRoundedUp = computed(() => Math.ceil(lines.value));
+    const linesRoundedUp = computed(() => Math.ceil(margins.lines));
     const previewLinesRoundedUp = computed(() =>
       Math.ceil(
-        (heightPt.value - preview.top - preview.bottom) / preview.leading
+        (dimensions.heightPt - preview.top - preview.bottom) / preview.leading
       )
     );
 
     return {
+      ...toRefs(global),
+      ...toRefs(dimensions),
+      ...toRefs(margins),
+      ...toRefs(grid),
+      ...toRefs(preview),
       style,
       linesRoundedUp,
-      leading,
-      lines,
-      rows,
-      checkGrid,
-      isPreviewing,
       previewStyle,
       previewLinesRoundedUp
     };

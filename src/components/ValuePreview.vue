@@ -27,26 +27,22 @@ export default defineComponent({
       Math.sign(props.value) === 1 && props.property !== "leading" ? `+` : null
     );
     const {
-      heightPt,
-      top,
-      bottom,
-      leading,
-      gutter,
-      rows,
-      rowSize,
-      factor,
-      isPreviewing,
+      global,
+      current,
+      dimensions,
+      margins,
+      grid,
       preview
     } = useToolbar();
 
     const cache = {
       value: props.value,
-      mt: top.value,
-      mb: bottom.value,
-      leading: leading.value,
-      gutter: gutter.value,
-      rows: rows.value,
-      rowSize: rowSize.value
+      mt: margins.top,
+      mb: margins.bottom,
+      leading: global.leading,
+      gutter: grid.gutter,
+      rows: grid.rows,
+      rowSize: grid.rowSize
     };
 
     const reset = () => {
@@ -60,27 +56,27 @@ export default defineComponent({
 
     const mouseOver = () => {
       // could this be animated?
-      isPreviewing.value = true;
+      global.isPreviewing = true;
       reset();
 
       switch (props.property) {
         case "top":
-          preview.top = top.value - props.value * factor.value;
+          preview.top = margins.top - props.value * current.factor;
           preview.rowSize =
-            (heightPt.value -
+            (dimensions.heightPt -
               cache.mt -
               preview.bottom -
-              gutter.value * (rows.value - 1)) /
-            rows.value;
+              grid.gutter * (grid.rows - 1)) /
+            grid.rows;
           break;
         case "bottom":
-          preview.bottom = bottom.value - props.value * factor.value;
+          preview.bottom = margins.bottom - props.value * current.factor;
           preview.rowSize =
-            (heightPt.value -
+            (dimensions.heightPt -
               cache.mt -
               preview.bottom -
-              gutter.value * (rows.value - 1)) /
-            rows.value;
+              grid.gutter * (grid.rows - 1)) /
+            grid.rows;
           break;
         case "leading":
           preview.leading = props.value;
@@ -88,7 +84,7 @@ export default defineComponent({
         case "gutter":
           preview.gutter = props.value;
           preview.rowSize =
-            (heightPt.value -
+            (dimensions.heightPt -
               cache.mt -
               preview.bottom -
               preview.gutter * (preview.rows - 1)) /
@@ -97,7 +93,7 @@ export default defineComponent({
         case "rows":
           preview.rows = props.value;
           preview.rowSize =
-            (heightPt.value -
+            (dimensions.heightPt -
               cache.mt -
               preview.bottom -
               preview.gutter * (preview.rows - 1)) /
@@ -109,7 +105,7 @@ export default defineComponent({
     };
 
     const mouseLeave = () => {
-      isPreviewing.value = false;
+      global.isPreviewing = false;
       reset();
     };
 

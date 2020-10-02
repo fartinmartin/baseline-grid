@@ -4,7 +4,7 @@
     <div class="toolbar">
       <keep-alive>
         <transition :name="transition">
-          <component :is="currentPanel"></component>
+          <component :is="panel"></component>
         </transition>
       </keep-alive>
     </div>
@@ -13,14 +13,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, toRefs } from "vue";
 import ToolbarHeader from "./ToolbarHeader.vue";
 import ToolbarFooter from "./ToolbarFooter.vue";
 import ToolbarCalculator from "./ToolbarCalculator.vue";
 import ToolbarFixes from "./ToolbarFixes.vue";
 import useToolbar from "@/composables/useToolbar";
-
-import pagePresets from "@/assets/data/page-presets.json";
 
 export default defineComponent({
   name: "Toolbar",
@@ -31,11 +29,12 @@ export default defineComponent({
     ToolbarFixes
   },
   setup() {
-    const { currentPanel, preset } = useToolbar();
+    const { current } = useToolbar();
+    const { panel } = toRefs(current);
     const transition = computed(() =>
-      currentPanel.value === "ToolbarCalculator" ? `slide-left` : `slide-right`
+      panel.value === "ToolbarCalculator" ? `slide-left` : `slide-right`
     );
-    return { currentPanel, transition, preset, pagePresets };
+    return { panel, transition };
   }
 });
 </script>

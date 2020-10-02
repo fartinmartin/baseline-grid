@@ -1,12 +1,12 @@
 <template>
   <button
-    v-if="currentPanel != 'ToolbarFixes'"
+    v-if="panel != 'ToolbarFixes'"
     class="message"
-    :class="isPassing ? 'good-news' : 'bad-news'"
+    :class="allPassing ? 'good-news' : 'bad-news'"
     @click.prevent="onClick"
     tabindex="-1"
   >
-    <span v-if="isPassing">
+    <span v-if="allPassing">
       Things are lining up—<br />you're good to go!
     </span>
     <span v-else>
@@ -18,7 +18,7 @@
   <button
     v-else
     class="message okay-news"
-    @click.prevent="currentPanel = 'ToolbarCalculator'"
+    @click.prevent="panel = 'ToolbarCalculator'"
     tabindex="-1"
   >
     Okay, got it.<br />
@@ -30,20 +30,23 @@
 // 🚨 TODO:
 // This could/should <transition>ed (fade?) to feel like it fits with toolbar panel transitions
 
-import { defineComponent } from "vue";
+import { defineComponent, toRefs } from "vue";
 import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
   name: "CalcOutput",
   setup() {
-    const { lines, currentPanel, isPassing } = useToolbar();
+    const { margins, current, isPassing } = useToolbar();
+    const { lines } = toRefs(margins);
+    const { panel } = toRefs(current);
+    const { all: allPassing } = toRefs(isPassing);
 
     const onClick = () => {
-      if (isPassing.value) return;
-      currentPanel.value = "ToolbarFixes";
+      if (allPassing) return;
+      panel.value = "ToolbarFixes";
     };
 
-    return { lines, currentPanel, onClick, isPassing };
+    return { lines, panel, onClick, allPassing };
   }
 });
 </script>

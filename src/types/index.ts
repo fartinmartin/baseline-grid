@@ -12,11 +12,11 @@ interface Preset {
 export interface UnitPreset extends Preset {
   factor: number;
   step?: number;
+  abbreviation?: string;
 }
 
 export interface PagePreset extends Preset {
   dimensions: { width: number; height: number };
-  abbreviation?: string;
   prefersLandscape?: boolean;
 }
 

@@ -10,7 +10,11 @@
     </panel>
 
     <panel header="Page Size">
-      <select-input label="Presets" v-model:selected="preset" :options="pp" />
+      <select-input
+        label="Presets"
+        v-model:selected="preset"
+        :options="pagePresets"
+      />
 
       <number-input :step="step" label="Width" v-model="width" optional />
       <number-input :step="step" label="Height" v-model="height" />
@@ -52,13 +56,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, toRefs } from "vue";
 import Panel from "./Panel.vue";
 import RadioInput from "./RadioInput.vue";
 import SelectInput from "./SelectInput.vue";
 import NumberInput from "./NumberInput.vue";
-import pp from "@/assets/data/page-presets.json";
 import useToolbar from "@/composables/useToolbar";
+
+import pagePresets from "@/assets/data/page-presets.json";
 
 export default defineComponent({
   name: "ToolbarCalculator",
@@ -69,47 +74,43 @@ export default defineComponent({
     RadioInput
   },
   setup() {
-    const {
-      leading,
-      width,
-      height,
-      orientation,
-      unit,
-      step,
-      preset,
-      top,
-      bottom,
-      gutter,
-      rows,
-      checkGrid
-    } = useToolbar();
+    const { global, current, dimensions, margins, grid } = useToolbar();
+
+    const { leading, preset, checkGrid } = toRefs(global);
+    const { unit, step } = toRefs(current);
+    const { width, height, orientation } = toRefs(dimensions);
+    const { top, bottom } = toRefs(margins);
+    const { gutter, rows } = toRefs(grid);
 
     const setOrientation = (event: { target: HTMLInputElement }) => {
       const target = event.target.value;
       if (
-        (target === "landscape" && width.value < height.value) ||
-        (target === "portrait" && width.value > height.value)
+        (target === "landscape" && dimensions.width < dimensions.height) ||
+        (target === "portrait" && dimensions.width > dimensions.height)
       ) {
-        [width.value, height.value] = [height.value, width.value];
-        orientation.value = target;
+        [dimensions.width, dimensions.height] = [
+          dimensions.height,
+          dimensions.width
+        ];
+        dimensions.orientation = target;
       }
     };
 
     return {
       leading,
-      pp,
+      checkGrid,
+      preset,
+      step,
+      unit,
       width,
       height,
       orientation,
-      unit,
-      step,
-      preset,
-      setOrientation,
       top,
       bottom,
       gutter,
       rows,
-      checkGrid
+      setOrientation,
+      pagePresets
     };
   }
 });
