@@ -9,23 +9,22 @@
         option!
       </p>
     </div>
-    <panel header="Baseline Grid" :disabled="!isPassing">
-      <div v-if="!baseline">
+    <panel header="Baseline Grid" :disabled="!allPassing">
+      <div v-if="!baselinePassing">
         <div class="option">
           <h4 class="label">Keep your leading and...</h4>
           <p>
-            Adjust your <span class="property">margins</span> by a total of
-            <value-preview property="bottom" :value="marginRemainder" />
-            or
-            <value-preview
-              property="bottom"
-              :value="newMarginHeight.high - safe"
-            />
-            or
-            <value-preview
-              property="bottom"
-              :value="newMarginHeight.low - safe"
-            />
+            Adjust your <span class="property">margin safe area</span> by a
+            total of
+            <template
+              v-for="(option, index) in baselineOptions.margins"
+              :key="option"
+            >
+              <value-preview property="bottom" :value="option" />
+              <span v-if="index < baselineOptions.margins.length - 1">
+                or
+              </span>
+            </template>
             points.
           </p>
         </div>
@@ -39,9 +38,16 @@
           </h4>
           <p>
             Adjust your <span class="property">leading</span> to
-            <value-preview property="leading" :value="newLeading.high" />
-            or
-            <value-preview property="leading" :value="newLeading.low" /> points.
+            <template
+              v-for="(option, index) in baselineOptions.leading"
+              :key="option"
+            >
+              <value-preview property="leading" :value="option" />
+              <span v-if="index < baselineOptions.leading.length - 1">
+                or
+              </span>
+            </template>
+            points.
           </p>
         </div>
       </div>
@@ -56,14 +62,25 @@
     </panel>
     <panel header="Grid Rows" :disabled="!checkGrid">
       <div v-if="checkGrid">
-        <div v-if="!grid">
+        <div v-if="!baselinePassing">
+          <p>
+            You need to fix your
+            <span class="property">Basline Grid</span> before tweaking the grid!
+          </p>
+        </div>
+        <div v-else-if="baselinePassing && !gridPassing">
           <div class="option">
             <h4 class="label">Keep your grid and...</h4>
             <p>
-              Adjust your <span class="property">margins</span> by a total of
-              <value-preview property="bottom" :value="newSafe.high - safe" />
-              or
-              <value-preview property="bottom" :value="newSafe.low - safe" />
+              Adjust your <span class="property">margin safe area</span> by a
+              total of
+              <template
+                v-for="(option, index) in gridOptions.margins"
+                :key="option"
+              >
+                <value-preview property="bottom" :value="option" />
+                <span v-if="index < gridOptions.margins.length - 1"> or </span>
+              </template>
               points.
             </p>
           </div>
@@ -104,7 +121,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs } from "vue";
+import { defineComponent, toRefs } from "vue";
 import Panel from "./Panel.vue";
 import ValuePreview from "./ValuePreview.vue";
 import useToolbar from "@/composables/useToolbar";
@@ -112,8 +129,6 @@ import { factors, closest, multiples } from "@/utils";
 
 // TODOs:
 // 1. figure out how to suggest gutter and row options
-// 2. implement array based options (see comment block below)
-// 3. update grid styles
 // 4. adapt unit to current selected unit
 // 5. animate page preview changes?
 
@@ -126,75 +141,60 @@ export default defineComponent({
       dimensions,
       margins,
       grid,
-      preview,
+      // preview,
       isPassing
     } = useToolbar();
 
     const { checkGrid } = toRefs(global);
-    const { safe } = toRefs(margins);
+    const {
+      baseline: baselinePassing,
+      grid: gridPassing,
+      all: allPassing
+    } = toRefs(isPassing);
 
-    // there should be an array of numbers for each option
-    // then you could loop over them in the template
-    // there should also be a validate (function?) that checks
-    // if the MARGIN value that is about to be pushed creates a
-    // scenario that exceeds the page dimensions
+    // 1. collect all the numbers
+    // 2. filter out impossible numbers OR duplicates
+    // 3. sort the numbers by smallest distance to 0 (aka: not by "value", -100 shouldn't trump +1)
+
     const baselineOptions: { margins: number[]; leading: number[] } = {
-      margins: [],
-      leading: []
+      margins: [
+        // the two multiples of the leading that are closest to margin safe area
+        ...Object.values(
+          closest(multiples(global.leading, dimensions.heightPt), margins.safe)
+        ).map(i => i - margins.safe)
+      ],
+      leading: [
+        // the two factors of margin safe area that are closest to the leading
+        ...Object.values(closest(factors(margins.safe), global.leading))
+      ]
     };
 
-    const m = Object.values(
-      closest(multiples(global.leading, dimensions.heightPt), margins.safe)
-    );
-    const l = Object.values(closest(factors(margins.safe), global.leading));
-
-    baselineOptions.margins = [...baselineOptions.margins, ...m];
-    baselineOptions.leading = [...baselineOptions.leading, ...l];
-
-    // console.log(baselineOptions);
-
-    const gridOptions: { margins: number[]; grid: object[] } = {
-      margins: [],
+    const gridOptions: {
+      margins: number[];
+      grid: { gutter: number; rows: number }[];
+    } = {
+      margins: [
+        grid.rows *
+          closest(multiples(global.leading, dimensions.heightPt), grid.rowSize)
+            .high +
+          (grid.rows - 1) * grid.gutter -
+          margins.safe,
+        grid.rows *
+          closest(multiples(global.leading, dimensions.heightPt), grid.rowSize)
+            .low +
+          (grid.rows - 1) * grid.gutter -
+          margins.safe
+      ],
       grid: []
     };
 
-    baselineOptions.margins.push(1);
-    gridOptions.grid.push({ gutter: 12, row: 6 });
-
-    const newLeading = closest(factors(margins.safe), global.leading);
-    const newMarginHeight = closest(
-      multiples(global.leading, dimensions.heightPt),
-      margins.safe
-    );
-
-    const marginRemainder = computed(
-      () => margins.safe - global.leading * Math.ceil(margins.lines)
-    );
-
-    const newRowSize = closest(
-      multiples(global.leading, dimensions.heightPt),
-      grid.rowSize
-    );
-
-    const newSafe = {
-      high: grid.rows * newRowSize.high + (grid.rows - 1) * grid.gutter,
-      low: grid.rows * newRowSize.low + (grid.rows - 1) * grid.gutter
-    };
-
-    // const newGutterCount = 36;
-    // const newRowCount = 3;
-
     return {
-      isPassing,
+      baselinePassing,
+      gridPassing,
+      allPassing,
       checkGrid,
-      newLeading,
-      newMarginHeight,
-      newRowSize,
-      ...toRefs(isPassing),
-      newSafe,
-      safe,
-      marginRemainder,
-      preview
+      baselineOptions,
+      gridOptions
     };
   }
 });

@@ -28,8 +28,7 @@ export const factors = (n: number): number[] =>
 export const multiples = (number: number, max: number): number[] => {
   const multiples = [];
   for (let i = 0; i < max; i++) {
-    const result = number * i;
-    if (result % number === 0) multiples.push(result);
+    multiples.push(number * i);
   }
   return multiples;
 };

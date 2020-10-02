@@ -15,11 +15,11 @@ const units = _fpg(unitPresets); // unitPresets: PresetGroup[]
 const pages = _fpg(pagePresets); // pagePresets: PresetGroup[]
 
 const global = reactive({
+  checkGrid: false,
+  isPreviewing: false,
   leading: 12,
   unit: "points" as UnitOption,
-  preset: "letter" as PageOption,
-  checkGrid: false,
-  isPreviewing: false
+  preset: "letter" as PageOption
 });
 
 const current = reactive({
