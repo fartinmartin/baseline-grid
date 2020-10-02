@@ -65,7 +65,8 @@
         <div v-if="!baselinePassing">
           <p>
             You need to fix your
-            <span class="property">Basline Grid</span> before tweaking the grid!
+            <span class="property">Basline Grid</span> before tweaking the
+            <span class="property">Grid Rows</span>!
           </p>
         </div>
         <div v-else-if="baselinePassing && !gridPassing">
