@@ -5,21 +5,23 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, watch } from "vue";
 import useToolbar from "@/composables/useToolbar";
-
-type Property = "top" | "bottom" | "leading" | "gutter" | "rows";
+import { PropertyOption } from "@/types";
 
 export default defineComponent({
   name: "ValuePreview",
   props: {
     property: {
-      type: String as () => Property,
+      type: String as () => PropertyOption,
       required: true
     },
     value: {
       type: Number, // in points
       required: true
+    },
+    trigger: {
+      type: Boolean
     }
   },
   setup(props) {
@@ -54,10 +56,10 @@ export default defineComponent({
       preview.rowSize = cache.rowSize;
     };
 
-    const mouseOver = () => {
+    const mouseOver = (trigger?: boolean) => {
       // could this be animated?
       global.isPreviewing = true;
-      reset();
+      !trigger && reset();
 
       switch (props.property) {
         case "top":
@@ -104,10 +106,22 @@ export default defineComponent({
       }
     };
 
+    // TODO:
+    // figure out how to size the rowSize acurately when both gutter AND rows are triggered
+
     const mouseLeave = () => {
       global.isPreviewing = false;
       reset();
     };
+
+    watch(
+      () => props.trigger,
+      (trigger, prevTrigger) => {
+        if (trigger === prevTrigger) return;
+        if (trigger) mouseOver(trigger);
+        else mouseLeave();
+      }
+    );
 
     return { mouseOver, mouseLeave, plus, cache };
   }
@@ -125,6 +139,7 @@ export default defineComponent({
   font-size: 0.875rem;
 }
 
+.active .value,
 .value:hover {
   color: var(--blue-base);
   border-color: var(--blue-base);

@@ -94,11 +94,16 @@
               Keep your margins and...
             </h4>
             <p>
-              Adjust your <span class="property">gutter</span> to
-              <span class="value">TBD</span> or
-              <span class="value">TBD</span> points and your
-              <span class="property">row count</span> to
-              <span class="value">TBD</span> or <span class="value">TBD</span>.
+              Adjust your...
+              <ul class="option-list">
+                <template v-for="(combo, index) in gridOptions.grid" :key="combo">
+                  <value-group-preview :group="combo" />
+                  <div class="option-divider" v-if="index < gridOptions.grid.length - 1">
+                    <span>or</span><div class="rule" />
+                  </div>
+                </template>
+              </ul>
+            <!-- eslint-disable-next-line -->
             </p>
           </div>
         </div>
@@ -125,6 +130,7 @@
 import { defineComponent, toRefs } from "vue";
 import Panel from "./Panel.vue";
 import ValuePreview from "./ValuePreview.vue";
+import ValueGroupPreview from "./ValueGroupPreview.vue";
 import useToolbar from "@/composables/useToolbar";
 import { factors, closest, multiples, closestToZero } from "@/utils";
 
@@ -135,16 +141,9 @@ import { factors, closest, multiples, closestToZero } from "@/utils";
 
 export default defineComponent({
   name: "ToolbarFixes",
-  components: { Panel, ValuePreview },
+  components: { Panel, ValuePreview, ValueGroupPreview },
   setup() {
-    const {
-      global,
-      dimensions,
-      margins,
-      grid,
-      // preview,
-      isPassing
-    } = useToolbar();
+    const { global, dimensions, margins, grid, isPassing } = useToolbar();
 
     const { checkGrid } = toRefs(global);
     const {
@@ -153,16 +152,46 @@ export default defineComponent({
       all: allPassing
     } = toRefs(isPassing);
 
-    // 1. collect all the numbers
-    // 2. filter out impossible numbers OR duplicates
-    // 3. sort the numbers by smallest distance to 0 (aka: not by "value", -100 shouldn't trump +1)
+    const leadingMultiples = multiples(global.leading, dimensions.heightPt);
+    const marginMatch = closest(leadingMultiples, margins.safe);
+    const rowSizeMatch = closest(leadingMultiples, grid.rowSize);
+
+    // 1. define three arrays for all possible values of: rowCount, rowSize, gutter
+    const possible = [
+      [...Array(Math.ceil(margins.lines / 2)).keys()].slice(2), // rowCount
+      multiples(global.leading, margins.safe / 2), // rowSize
+      multiples(global.leading, margins.safe / 2) // gutterSize
+    ];
+
+    // 2. find all combos of those three arrays
+    // don't fully understand this (classic) but it returns an array of combos—just what i need
+    // https://stackoverflow.com/a/44338759/8703073
+    function* cartesian(
+      head?: number[],
+      ...tail: number[][]
+    ): object | number[][] {
+      const remainder: object | number[][] = tail.length
+        ? cartesian(...tail)
+        : [[]];
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      for (const r of remainder) for (const h of head) yield [h, ...r];
+    }
+
+    // 3. filter combos to only those that when test()'d fall within margins.safe
+    const test = (rowCount: number, rowSize: number, gutter: number) =>
+      rowCount * rowSize + (rowCount - 1) * gutter;
+
+    const combos = [...cartesian(...possible)].filter(
+      combo => test(combo[0], combo[1], combo[2]) === margins.safe
+    ).filter(
+      combo => combo[2] <= combo[1] // removes combos where gutter is larger than rowsize
+    );
 
     const baselineOptions: { margins: number[]; leading: number[] } = {
       margins: [
         // the two multiples of the leading that are closest to margin safe area
-        ...Object.values(
-          closest(multiples(global.leading, dimensions.heightPt), margins.safe)
-        ).map(i => i - margins.safe)
+        ...Object.values(marginMatch).map(i => i - margins.safe)
       ].sort(closestToZero),
       leading: [
         // the two factors of margin safe area that are closest to the leading
@@ -172,22 +201,32 @@ export default defineComponent({
 
     const gridOptions: {
       margins: number[];
-      grid: { gutter: number; rows: number }[];
+      grid: object[];
     } = {
       margins: [
-        grid.rows *
-          closest(multiples(global.leading, dimensions.heightPt), grid.rowSize)
-            .high +
-          (grid.rows - 1) * grid.gutter -
-          margins.safe,
-        grid.rows *
-          closest(multiples(global.leading, dimensions.heightPt), grid.rowSize)
-            .low +
-          (grid.rows - 1) * grid.gutter -
-          margins.safe
+        // the two multiples of the rowSize that are closest to margin safe area
+        ...Object.values(rowSizeMatch).map(
+          i => grid.rows * i + (grid.rows - 1) * grid.gutter - margins.safe
+        )
       ].sort(closestToZero),
-      grid: []
+      grid: [
+        ...combos.map(combo => [
+          {
+            property: "gutter",
+            value: combo[2],
+            unit: "points"
+          },
+          {
+            property: "rows",
+            value: combo[0],
+            unit: "rows"
+          }
+        ])
+      ]
     };
+
+    // TODO:
+    // sort gridOptions.grid (an array of objects) by rows value closest to grid.rows
 
     return {
       baselinePassing,
@@ -275,5 +314,9 @@ p + p {
     width: 0.875rem;
     height: 0.875rem;
   }
+}
+
+.option-list li {
+margin-top: 1rem;
 }
 </style>

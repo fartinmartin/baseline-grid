@@ -17,7 +17,7 @@
         </div>
         <div id="grid-bottom-lines" v-if="checkGrid">
           <div
-            v-for="(row, index) in rows"
+            v-for="(row, index) in isPreviewing ? previewRows : rows"
             :key="index"
             class="guide"
             :style="isPreviewing ? previewStyle.guide : style.guide"
@@ -29,7 +29,7 @@
           v-if="checkGrid"
         >
           <div
-            v-for="(row, index) in rows"
+            v-for="(row, index) in isPreviewing ? previewRows : rows"
             :key="index"
             class="guide"
             :style="isPreviewing ? previewStyle.guide : style.guide"
@@ -52,6 +52,7 @@ export default defineComponent({
   name: "PagePreview",
   setup() {
     const { global, dimensions, margins, grid, preview } = useToolbar();
+    const { rows: previewRows } = preview;
 
     const style = computed(() => ({
       page: `width: ${dimensions.widthPt}px; height: ${dimensions.heightPt}px;`,
@@ -61,11 +62,20 @@ export default defineComponent({
       grid: `margin-top: ${grid.gutter - 1}px`
     }));
 
+    // const previewRowSize = computed(
+    //   () =>
+    //     (dimensions.heightPt -
+    //       margins.topPt -
+    //       margins.bottomPt -
+    //       preview.gutter * (preview.rows - 1)) /
+    //     preview.rows
+    // );
+
     const previewStyle = computed(() => ({
       page: `width: ${dimensions.widthPt}px; height: ${dimensions.heightPt}px;`,
       margin: `top: ${preview.top}px; bottom: ${preview.bottom}px`,
       line: `margin-top: ${preview.leading - 1}px`,
-      guide: `height: ${preview.rowSize}px; margin-top: ${preview.gutter}px`,
+      guide: `height: ${preview.rowSize}px; margin-top: ${preview.gutter}px;`,
       grid: `margin-top: ${preview.gutter - 1}px`
     }));
 
@@ -82,7 +92,8 @@ export default defineComponent({
       style,
       linesRoundedUp,
       previewStyle,
-      previewLinesRoundedUp
+      previewLinesRoundedUp,
+      previewRows
     };
   }
 });

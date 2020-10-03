@@ -47,3 +47,4 @@ export type PageOption =
 
 export type OrientationOption = "landscape" | "portrait";
 export type PanelOption = "ToolbarCalculator" | "ToolbarFixes";
+export type PropertyOption = "top" | "bottom" | "leading" | "gutter" | "rows";

@@ -68,7 +68,10 @@ const preview = reactive({
 
 const isPassing = reactive({
   baseline: computed((): boolean => Number.isInteger(margins.lines)),
-  grid: computed((): boolean => grid.rowSize % global.leading === 0),
+  grid: computed(
+    (): boolean =>
+      grid.rowSize % global.leading === 0 && grid.gutter % global.leading === 0
+  ),
   all: computed((): boolean =>
     global.checkGrid ? isPassing.grid && isPassing.baseline : isPassing.baseline
   )
