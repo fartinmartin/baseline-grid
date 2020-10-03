@@ -62,14 +62,8 @@ export default defineComponent({
       grid: `margin-top: ${grid.gutter - 1}px`
     }));
 
-    // const previewRowSize = computed(
-    //   () =>
-    //     (dimensions.heightPt -
-    //       margins.topPt -
-    //       margins.bottomPt -
-    //       preview.gutter * (preview.rows - 1)) /
-    //     preview.rows
-    // );
+    // TODO:
+    // why arent SOME preview guide: `height: ${preview.rowSize}px` not rendering correctly?
 
     const previewStyle = computed(() => ({
       page: `width: ${dimensions.widthPt}px; height: ${dimensions.heightPt}px;`,

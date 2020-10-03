@@ -8,11 +8,11 @@ import {
   UnitOption,
   UnitPreset
 } from "@/types";
-import { flattenPresetGroup as _fpg } from "@/utils";
+import { flattenPresetGroup } from "@/utils";
 import { computed, reactive, watch } from "vue";
 
-const units = _fpg(unitPresets); // unitPresets: PresetGroup[]
-const pages = _fpg(pagePresets); // pagePresets: PresetGroup[]
+const units = flattenPresetGroup(unitPresets); // unitPresets: PresetGroup[]
+const pages = flattenPresetGroup(pagePresets); // pagePresets: PresetGroup[]
 
 const global = reactive({
   checkGrid: false,
@@ -63,7 +63,14 @@ const preview = reactive({
   bottom: 48,
   gutter: 12,
   rows: 6,
+  safe: computed(
+    (): number => dimensions.heightPt - preview.top - preview.bottom
+  ),
   rowSize: NaN
+  // rowSize: computed(
+  //   (): number =>
+  //     (preview.safe - preview.gutter * (preview.rows - 1)) / preview.rows
+  // )
 });
 
 const isPassing = reactive({

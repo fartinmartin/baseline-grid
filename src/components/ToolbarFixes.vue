@@ -93,18 +93,24 @@
             <h4 class="label">
               Keep your margins and...
             </h4>
-            <p>
+            <div>
               Adjust your...
               <ul class="option-list">
-                <template v-for="(combo, index) in gridOptions.grid" :key="combo">
+                <template
+                  v-for="(combo, index) in gridOptions.grid"
+                  :key="combo"
+                >
                   <value-group-preview :group="combo" />
-                  <div class="option-divider" v-if="index < gridOptions.grid.length - 1">
-                    <span>or</span><div class="rule" />
+                  <div
+                    class="option-divider"
+                    v-if="index < gridOptions.grid.length - 1"
+                  >
+                    <span>or</span>
+                    <div class="rule" />
                   </div>
                 </template>
               </ul>
-            <!-- eslint-disable-next-line -->
-            </p>
+            </div>
           </div>
         </div>
         <div v-else>
@@ -182,11 +188,11 @@ export default defineComponent({
     const test = (rowCount: number, rowSize: number, gutter: number) =>
       rowCount * rowSize + (rowCount - 1) * gutter;
 
-    const combos = [...cartesian(...possible)].filter(
-      combo => test(combo[0], combo[1], combo[2]) === margins.safe
-    ).filter(
-      combo => combo[2] <= combo[1] // removes combos where gutter is larger than rowsize
-    );
+    const combos = [...cartesian(...possible)]
+      .filter(combo => test(combo[0], combo[1], combo[2]) === margins.safe)
+      .filter(
+        combo => combo[2] <= combo[1] // removes combos where gutter is larger than rowsize
+      );
 
     const baselineOptions: { margins: number[]; leading: number[] } = {
       margins: [
@@ -222,11 +228,10 @@ export default defineComponent({
             unit: "rows"
           }
         ])
-      ]
+      ].sort(
+        (a, b) => grid.rows - a[1].value - Math.abs(grid.rows - b[1].value)
+      )
     };
-
-    // TODO:
-    // sort gridOptions.grid (an array of objects) by rows value closest to grid.rows
 
     return {
       baselinePassing,
@@ -316,7 +321,13 @@ p + p {
   }
 }
 
-.option-list li {
-margin-top: 1rem;
+.option-list {
+  li {
+    margin-top: 1rem;
+  }
+
+  .option-divider .rule {
+    width: calc(100% - 4rem);
+  }
 }
 </style>
