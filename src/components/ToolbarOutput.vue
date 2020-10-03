@@ -34,7 +34,7 @@ import { defineComponent, toRefs } from "vue";
 import useToolbar from "@/composables/useToolbar";
 
 export default defineComponent({
-  name: "CalcOutput",
+  name: "ToolbarOutput",
   setup() {
     const { margins, current, isPassing } = useToolbar();
     const { lines } = toRefs(margins);

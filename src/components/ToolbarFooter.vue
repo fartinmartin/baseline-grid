@@ -1,6 +1,6 @@
 <template>
   <footer class="footer-wrap">
-    <calc-output />
+    <toolbar-output />
     <div class="footer">
       <span>
         Made by
@@ -17,11 +17,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import CalcOutput from "./CalcOutput.vue";
+import ToolbarOutput from "./ToolbarOutput.vue";
 
 export default defineComponent({
   name: "ToolbarFooter",
-  components: { CalcOutput }
+  components: { ToolbarOutput }
 });
 </script>
 
