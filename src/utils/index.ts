@@ -53,3 +53,6 @@ export const closest = (
 
   return payload;
 };
+
+export const closestToZero = (a: number, b: number) =>
+  Math.abs(0 - a) - Math.abs(0 - b);

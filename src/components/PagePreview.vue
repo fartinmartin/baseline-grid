@@ -78,10 +78,7 @@ export default defineComponent({
 
     return {
       ...toRefs(global),
-      ...toRefs(dimensions),
-      ...toRefs(margins),
       ...toRefs(grid),
-      ...toRefs(preview),
       style,
       linesRoundedUp,
       previewStyle,

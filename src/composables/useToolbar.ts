@@ -40,11 +40,10 @@ const dimensions = reactive({
 
 const margins = reactive({
   top: 36,
-  bottom: 48,
+  bottom: 36,
   topPt: computed((): number => margins.top / current.factor),
   bottomPt: computed((): number => margins.bottom / current.factor),
   lines: computed((): number => margins.safe / global.leading),
-  linesRoundedUp: computed((): number => Math.ceil(margins.lines)),
   safe: computed(
     (): number => dimensions.heightPt - margins.topPt - margins.bottomPt
   )

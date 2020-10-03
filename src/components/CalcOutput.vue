@@ -42,7 +42,7 @@ export default defineComponent({
     const { all: allPassing } = toRefs(isPassing);
 
     const onClick = () => {
-      if (allPassing) return;
+      if (allPassing.value) return;
       panel.value = "ToolbarFixes";
     };
 

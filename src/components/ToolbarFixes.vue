@@ -126,7 +126,7 @@ import { defineComponent, toRefs } from "vue";
 import Panel from "./Panel.vue";
 import ValuePreview from "./ValuePreview.vue";
 import useToolbar from "@/composables/useToolbar";
-import { factors, closest, multiples } from "@/utils";
+import { factors, closest, multiples, closestToZero } from "@/utils";
 
 // TODOs:
 // 1. figure out how to suggest gutter and row options
@@ -163,11 +163,11 @@ export default defineComponent({
         ...Object.values(
           closest(multiples(global.leading, dimensions.heightPt), margins.safe)
         ).map(i => i - margins.safe)
-      ],
+      ].sort(closestToZero),
       leading: [
         // the two factors of margin safe area that are closest to the leading
         ...Object.values(closest(factors(margins.safe), global.leading))
-      ]
+      ].sort(closestToZero)
     };
 
     const gridOptions: {
@@ -185,7 +185,7 @@ export default defineComponent({
             .low +
           (grid.rows - 1) * grid.gutter -
           margins.safe
-      ],
+      ].sort(closestToZero),
       grid: []
     };
 
