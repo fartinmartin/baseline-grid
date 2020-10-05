@@ -52,7 +52,7 @@ export default defineComponent({
   name: "PagePreview",
   setup() {
     const { global, dimensions, margins, grid, preview } = useToolbar();
-    const { rows: previewRows } = preview;
+    const { rows: previewRows } = toRefs(preview);
 
     const style = computed(() => ({
       page: `width: ${dimensions.widthPt}px; height: ${dimensions.heightPt}px;`,

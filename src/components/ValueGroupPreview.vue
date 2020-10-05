@@ -6,11 +6,12 @@
     :class="{ active }"
   >
     <div v-for="(item, index) in group" :key="item.property">
-      <span class="property">{{ item.property }}</span> to
+      <span class="property">{{ item.label }}</span> to
       <value-preview
         :property="item.property"
         :value="item.value"
         :trigger="active"
+        absolute
       />
       {{ " " }}<span>{{ item.unit }}</span>
       <span v-if="index < group.length - 1"> and </span>

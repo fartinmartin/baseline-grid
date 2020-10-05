@@ -3,7 +3,7 @@
     <toolbar-header />
     <div class="toolbar">
       <keep-alive>
-        <transition :name="transition">
+        <transition :name="transition" @after-enter="afterEnter">
           <component :is="panel"></component>
         </transition>
       </keep-alive>
@@ -31,10 +31,20 @@ export default defineComponent({
   setup() {
     const { current } = useToolbar();
     const { panel } = toRefs(current);
+
     const transition = computed(() =>
       panel.value === "ToolbarCalculator" ? `slide-left` : `slide-right`
     );
-    return { panel, transition };
+
+    const afterEnter = (el: {
+      classList: DOMTokenList;
+      offsetParent: HTMLElement;
+    }) => {
+      if (!el.classList.contains("fixes-wrap")) return;
+      el.offsetParent.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    return { panel, transition, afterEnter };
   }
 });
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="fixes-wrap">
+  <div class="fixes-wrap" ref="root">
     <div class="intro">
       <p>
         Here are a couple things you may want to try...
@@ -133,7 +133,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from "vue";
+import { defineComponent, onUpdated, Ref, ref, toRefs } from "vue";
 import Panel from "./Panel.vue";
 import ValuePreview from "./ValuePreview.vue";
 import ValueGroupPreview from "./ValueGroupPreview.vue";
@@ -149,6 +149,11 @@ export default defineComponent({
   name: "ToolbarFixes",
   components: { Panel, ValuePreview, ValueGroupPreview },
   setup() {
+    const root = ref(null) as Ref<HTMLElement | null>;
+    onUpdated(() => {
+      root.value?.scrollTop;
+    });
+
     const { global, dimensions, margins, grid, isPassing } = useToolbar();
 
     const { checkGrid } = toRefs(global);
@@ -220,20 +225,24 @@ export default defineComponent({
           {
             property: "gutter",
             value: combo[2],
-            unit: "points"
+            unit: "points",
+            label: "gutter"
           },
           {
             property: "rows",
             value: combo[0],
-            unit: "rows"
+            unit: "",
+            label: "row count"
           }
         ])
       ].sort(
+        // this is supposed to sort by closest row count to current row count.. but it seems to just be in descending order...
         (a, b) => grid.rows - a[1].value - Math.abs(grid.rows - b[1].value)
       )
     };
 
     return {
+      root,
       baselinePassing,
       gridPassing,
       allPassing,

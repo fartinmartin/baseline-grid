@@ -1,6 +1,6 @@
 <template>
   <span class="value" @mouseover="mouseOver" @mouseleave="mouseLeave">
-    {{ plus }}{{ cache.value }}
+    {{ !absolute ? plus : null }}{{ cache.value }}
   </span>
 </template>
 
@@ -21,6 +21,9 @@ export default defineComponent({
       required: true
     },
     trigger: {
+      type: Boolean
+    },
+    absolute: {
       type: Boolean
     }
   },
