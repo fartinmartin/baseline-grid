@@ -64,7 +64,10 @@
       <div v-if="checkGrid">
         <div v-if="!baselinePassing">
           <p>
-            You need to fix your
+            <span class="warning">
+              <img src="@/assets/images/warning.svg" alt="" />
+            </span>
+            Fix your
             <span class="property">Basline Grid</span> before tweaking the
             <span class="property">Grid Rows</span>!
           </p>
@@ -141,7 +144,10 @@ import useToolbar from "@/composables/useToolbar";
 import { factors, closest, multiples, closestToZero } from "@/utils";
 
 // TODOs:
-// 1. figure out how to suggest gutter and row options
+// 1. handle gutter solutions!
+// correct them if gutter is not a multiple of leading (separately... maybe watch when leading changes and update gutter to follow (use previous value to determine next value))
+// if results (gridOptions.grid) have gutter === to grid.gutter then just show row count message,
+// if row count is === to grid.rows then just show gutter message.
 // 4. adapt unit to current selected unit
 // 5. animate page preview changes?
 
@@ -308,6 +314,20 @@ p + p {
     transform: translate3d(-50%, -50%, 0);
     width: 100%;
     border-top: 1px dotted var(--gray-30);
+  }
+}
+
+.warning {
+  display: inline-block;
+
+  position: relative;
+  top: 5px;
+  margin-right: 0.25rem;
+
+  img {
+    max-width: 100%;
+    width: 1.25rem;
+    height: 1.25rem;
   }
 }
 

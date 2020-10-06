@@ -142,6 +142,12 @@ export default function useTest() {
     }
   );
 
+  // when leading changes, update gutter to match (TODO: use previous value to determine factor?)
+  watch(
+    () => global.leading,
+    leading => (grid.gutter = leading)
+  );
+
   // listen for pastes, then parse any letters and convert as necessary (eg. 41p6 == 46.5 picas)
   // const onPaste = async (event: ClipboardEvent, value: Ref) => {
   //   do stuff

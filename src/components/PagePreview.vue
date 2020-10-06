@@ -1,6 +1,16 @@
 <template>
   <div class="page-wrap">
-    <div id="page" :style="isPreviewing ? previewStyle.page : style.page">
+    <div
+      id="page"
+      :style="isPreviewing ? previewStyle.page : style.page"
+      :class="{
+        all,
+        baseline,
+        grid,
+        calc: panel === 'ToolbarCalculator',
+        fixes: panel !== 'ToolbarCalculator'
+      }"
+    >
       <div
         id="margin"
         :style="isPreviewing ? previewStyle.margin : style.margin"
@@ -51,8 +61,17 @@ import useToolbar from "@/composables/useToolbar";
 export default defineComponent({
   name: "PagePreview",
   setup() {
-    const { global, dimensions, margins, grid, preview } = useToolbar();
+    const {
+      global,
+      current,
+      dimensions,
+      margins,
+      grid,
+      preview,
+      isPassing
+    } = useToolbar();
     const { rows: previewRows } = toRefs(preview);
+    const { panel } = toRefs(current);
 
     const style = computed(() => ({
       page: `width: ${dimensions.widthPt}px; height: ${dimensions.heightPt}px;`,
@@ -83,6 +102,8 @@ export default defineComponent({
     return {
       ...toRefs(global),
       ...toRefs(grid),
+      ...toRefs(isPassing),
+      panel,
       style,
       linesRoundedUp,
       previewStyle,
@@ -171,5 +192,12 @@ export default defineComponent({
   &:first-of-type {
     margin-top: 0 !important;
   }
+}
+
+#page.fixes:not(.baseline) .guide {
+  /* border-bottom-color: rgba(255, 255, 255, 0) !important; */
+  /* opacity: 0.75; */
+  border-bottom-style: dotted !important;
+  border-bottom-color: var(--yellow-base) !important;
 }
 </style>
