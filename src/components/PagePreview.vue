@@ -46,6 +46,34 @@
           />
         </div>
       </div>
+      <div class="robot-note" v-if="robotNote">
+        <div>
+          <p>
+            <span>Psst!</span>
+            All this tool really does is check that:
+          </p>
+          <ul>
+            <li>
+              your <span class="property">leading</span> is a factor of your
+              <span class="property">margin safe area</span>
+            </li>
+            <li>
+              your <span class="property">horizontal rows</span> are a multiple
+              of your <span class="property">leading</span>
+            </li>
+            <li>
+              your <span class="property">gutter</span> is a multiple of your
+              <span class="property">leading</span>
+            </li>
+          </ul>
+          <p>That's it!</p>
+          <hr />
+          <p>
+            To the left are potential solutions. Hover over them to preview
+            their changes.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -199,5 +227,32 @@ export default defineComponent({
   /* opacity: 0.75; */
   border-bottom-style: dotted !important;
   border-bottom-color: var(--yellow-base) !important;
+}
+
+.robot-note {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: hsla(0, 0%, 98%, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+
+  > div > p > span {
+    font-style: italic;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px dotted var(--gray-20);
+    margin: 1.5rem 0;
+  }
+
+  .property {
+    font-weight: 700;
+  }
 }
 </style>

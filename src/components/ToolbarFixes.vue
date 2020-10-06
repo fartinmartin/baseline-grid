@@ -5,8 +5,13 @@
         Here are a couple things you may want to try...
       </p>
       <p class="note">
-        Keep in mind I am a robot—use your human judgement to choose the best
-        option!
+        Keep in mind I am a
+        <span
+          class="robot"
+          @mouseover="robotNote = true"
+          @mouseleave="robotNote = false"
+          >robot</span
+        >—use your human judgement to choose the best option!
       </p>
     </div>
     <panel header="Baseline Grid" :disabled="!allPassing">
@@ -162,7 +167,7 @@ export default defineComponent({
 
     const { global, dimensions, margins, grid, isPassing } = useToolbar();
 
-    const { checkGrid } = toRefs(global);
+    const { checkGrid, robotNote } = toRefs(global);
     const {
       baseline: baselinePassing,
       grid: gridPassing,
@@ -261,7 +266,8 @@ export default defineComponent({
       allPassing,
       checkGrid,
       baselineOptions,
-      gridOptions
+      gridOptions,
+      robotNote
     };
   }
 });
@@ -364,6 +370,15 @@ p + p {
 
   .option-divider .rule {
     width: calc(100% - 4rem);
+  }
+}
+
+.robot {
+  border-bottom: 1px dotted var(--gray-30);
+  &:hover {
+    color: var(--blue-base);
+    border-bottom-color: var(--blue-base);
+    cursor: pointer;
   }
 }
 </style>

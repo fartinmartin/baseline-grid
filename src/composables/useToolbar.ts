@@ -19,7 +19,8 @@ const global = reactive({
   isPreviewing: false,
   leading: 12,
   unit: "points" as UnitOption,
-  preset: "letter" as PageOption
+  preset: "letter" as PageOption,
+  robotNote: false
 });
 
 const current = reactive({
