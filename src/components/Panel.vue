@@ -29,11 +29,12 @@ export default defineComponent({
   props: {
     header: String,
     optional: Boolean,
-    modelValue: Boolean
+    modelValue: Boolean,
+    closed: Boolean
   },
   setup(props) {
     const checked = ref(props.modelValue);
-    const open = ref(true);
+    const open = ref(props.closed ? false : true);
 
     const handleOpen = (event: { target: HTMLElement }) => {
       if (event.target.tagName === "INPUT") return;

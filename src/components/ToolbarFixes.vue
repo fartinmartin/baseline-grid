@@ -203,6 +203,9 @@ export default defineComponent({
       .filter(combo => test(combo[0], combo[1], combo[2]) === margins.safe)
       .filter(
         combo => combo[2] <= combo[1] // removes combos where gutter is larger than rowsize
+      )
+      .filter(
+        combo => combo[2] <= global.leading * 4 // removes combos where gutter is larger 4 times the leading
       );
 
     const baselineOptions: { margins: number[]; leading: number[] } = {
@@ -218,7 +221,7 @@ export default defineComponent({
 
     const gridOptions: {
       margins: number[];
-      grid: object[];
+      grid: { value: number }[][];
     } = {
       margins: [
         // the two multiples of the rowSize that are closest to margin safe area
@@ -232,18 +235,22 @@ export default defineComponent({
             property: "gutter",
             value: combo[2],
             unit: "points",
-            label: "gutter"
+            label: "gutter",
+            actual: grid.gutter
           },
           {
             property: "rows",
             value: combo[0],
             unit: "",
-            label: "row count"
+            label: "row count",
+            actual: grid.rows
           }
         ])
       ].sort(
-        // this is supposed to sort by closest row count to current row count.. but it seems to just be in descending order...
-        (a, b) => grid.rows - a[1].value - Math.abs(grid.rows - b[1].value)
+        // sort by row count closest to current value (grid.rows) aka, the original request by the designer
+        // TODO: also sort by closet gutter value (a[2].value/b[2].value)
+        (a, b) =>
+          Math.abs(grid.rows - a[1].value) - Math.abs(grid.rows - b[1].value)
       )
     };
 

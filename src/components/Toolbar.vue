@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs } from "vue";
+import { computed, defineComponent, toRefs, watch } from "vue";
 import ToolbarHeader from "./ToolbarHeader.vue";
 import ToolbarFooter from "./ToolbarFooter.vue";
 import ToolbarCalculator from "./ToolbarCalculator.vue";
@@ -30,10 +30,16 @@ export default defineComponent({
   },
   setup() {
     const { current } = useToolbar();
-    const { panel } = toRefs(current);
+    const { panel, closedPanels } = toRefs(current);
 
     const transition = computed(() =>
       panel.value === "ToolbarCalculator" ? `slide-left` : `slide-right`
+    );
+
+    watch(panel, (panel, prevPanel) =>
+      prevPanel !== "ToolbarCalculator"
+        ? closedPanels.value.push("Page Size")
+        : closedPanels.value.splice(closedPanels.value.indexOf("Page Size"))
     );
 
     const afterEnter = (el: {

@@ -6,16 +6,25 @@
     :class="{ active }"
   >
     <div v-for="(item, index) in group" :key="item.property">
-      <span class="property">{{ item.label }}</span> to
-      <value-preview
-        :property="item.property"
-        :value="item.value"
-        :trigger="active"
-        absolute
-      />
-      {{ " " }}<span>{{ item.unit }}</span>
-      <span v-if="index < group.length - 1"> and </span>
-      <br v-if="index < group.length - 1" />
+      <template v-if="item.actual !== item.value">
+        <span class="property">{{ item.label }}</span> to
+        <value-preview
+          :property="item.property"
+          :value="item.value"
+          :trigger="active"
+          absolute
+        />
+        {{ " " }}<span>{{ item.unit }}</span>
+        <span
+          v-if="
+            index < group.length - 1 &&
+              group[index + 1].actual !== group[index + 1].value
+          "
+        >
+          and
+        </span>
+        <br v-if="index < group.length - 1" />
+      </template>
     </div>
   </li>
 </template>

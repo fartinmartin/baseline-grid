@@ -27,7 +27,8 @@ const current = reactive({
   unit: computed((): UnitPreset => units.find(i => i.id === global.unit)),
   page: computed((): PagePreset => pages.find(i => i.id === global.preset)),
   factor: computed((): number => current.unit.factor),
-  step: computed((): number | undefined => current.unit.step)
+  step: computed((): number | undefined => current.unit.step),
+  closedPanels: [] as string[]
 });
 
 const dimensions = reactive({

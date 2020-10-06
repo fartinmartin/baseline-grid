@@ -1,15 +1,6 @@
 <template>
   <div>
-    <panel header="Typography">
-      <number-input
-        label="Leading"
-        v-model="leading"
-        :step="0.1"
-        freeze="points"
-      />
-    </panel>
-
-    <panel header="Page Size">
+    <panel header="Page Size" :closed="closedPanels.includes('Page Size')">
       <select-input
         label="Presets"
         v-model:selected="preset"
@@ -27,6 +18,15 @@
           { label: 'Landscape', value: 'landscape' }
         ]"
         @click="setOrientation"
+      />
+    </panel>
+
+    <panel header="Typography">
+      <number-input
+        label="Leading"
+        v-model="leading"
+        :step="0.1"
+        freeze="points"
       />
     </panel>
 
@@ -77,7 +77,7 @@ export default defineComponent({
     const { global, current, dimensions, margins, grid } = useToolbar();
 
     const { leading, preset, checkGrid } = toRefs(global);
-    const { unit, step } = toRefs(current);
+    const { unit, step, closedPanels } = toRefs(current);
     const { width, height, orientation } = toRefs(dimensions);
     const { top, bottom } = toRefs(margins);
     const { gutter, rows } = toRefs(grid);
@@ -110,7 +110,8 @@ export default defineComponent({
       gutter,
       rows,
       setOrientation,
-      pagePresets
+      pagePresets,
+      closedPanels
     };
   }
 });
