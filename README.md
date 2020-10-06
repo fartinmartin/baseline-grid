@@ -1,5 +1,7 @@
 # baseline-grid
 
+A tool for print designers to build perfect baseline grids and horizontal guides.
+
 ## Project setup
 ```
 npm install
