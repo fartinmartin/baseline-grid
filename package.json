@@ -1,0 +1,21 @@
+{
+  "name": "baseline-grid",
+  "version": "1.0.0",
+  "description": "A tool to help print designer's calculate their baseline grid requirements.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "publish-lib": "npm run build && npm publish",
+    "publish-beta": "npm run build && npm publish --tag beta",
+    "publish-dryrun": "npm run build && npm publish --dry-run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fartinmartin/baseline-grid.git"
+  }
+}
